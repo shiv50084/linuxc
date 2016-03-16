@@ -1,0 +1,2 @@
+# linuxc
+LinuxC notes
