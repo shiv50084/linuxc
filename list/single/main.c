@@ -23,8 +23,7 @@ int main(int argc, char **argv)
 
 	/* delete one */
 	p = search(90);
-	//delete(p);
-	delete_plus(p);
+	delete(p);
 	free_node(p);
 
 	traverse(print_item);

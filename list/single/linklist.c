@@ -39,36 +39,12 @@ void insert(struct node* p)
 	head = p;
 }
 
-void delete(struct node* p)
-{
-	struct node *pre;
-
-	assert(p != NULL);
-
-	/* 要删除的是表头 */
-	if (p == head)
-	{
-		head = p->next;
-		return;
-	}
-
-	for (pre = head; pre; pre = pre->next)
-	{
-		if (pre->next == p)
-		{
-			pre->next = pre->next->next;
-			return;
-		}
-	}
-}
-
 /* 
  * delete 的优化版本
  * 不需要对是否是删除头部特殊判断
  * 这里巧用了二级指针操作
- * 一个指向当前节点的二级指针就是其上一节点
  */
-void delete_plus(struct node *p)
+void delete(struct node *p)
 {
 	struct node **pnext;
 
@@ -82,6 +58,12 @@ void delete_plus(struct node *p)
 	}
 }
 
+/*
+ * 遍历链表
+ * 这个函数设计很巧秒
+ * 用函数指针作为参数
+ * 根据传进来的函数指针不同,这个函数就有不同的作用
+ */
 void traverse(void (*visit) (struct node*))
 {
 	struct node *p;
