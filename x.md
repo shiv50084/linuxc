@@ -89,7 +89,12 @@ alloca
 所以不需要free
 这个函数不属于 C 标准库,而是在 POSIX 标准中定义的。
 
-#段错误的产生流程:
+#段错误的产生流程
 1. 用户程序要访问的一个虚拟地址,经MMU检查无权访问.
 2. MMU 产生一个异常,CPU 从用户模式切换到特权模式,跳转到内核代码中执行异常服务程序.
 3. 内核把这个异常解释为段错误,把引发异常的进程终止掉.
+
+#SRAM and DRAM
+SRAM static RAM(CPU的Cache通常由SRAM组成)
+DRAM dynamic RAM(内存通常由DRAM组成)
+DRAM电路比SRAM简单,存储容量可以做得更大,但DRAM的访问速度比SRAM慢.
