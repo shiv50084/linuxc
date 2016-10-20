@@ -34,9 +34,9 @@ void *start_routine(void *argv)
 	
 	while (1)
 	{
-		ret = write(fd, msg, strlen(msg));
+		ret = send(fd, msg, strlen(msg), MSG_WAITALL);
 		
-		ret = read(fd, buf, READ_BUF_SIZE);
+		ret = recv(fd, buf, READ_BUF_SIZE, MSG_WAITALL);
 		buf[ret] = '\0';
 		printf("%s[%d]\n", buf, cnt++);
 		
@@ -68,9 +68,9 @@ int main(int argc, char *argv[])
 		const char *child_msg = "Child Process";
 		while (1)
 		{
-			ret = write(sockets[0], child_msg, strlen(child_msg));
+			ret = send(sockets[0], child_msg, strlen(child_msg), MSG_WAITALL);
 
-			ret = read(sockets[0], buf, READ_BUF_SIZE);
+			ret = recv(sockets[0], buf, READ_BUF_SIZE, MSG_WAITALL);
 			buf[ret] = '\0';
 			printf("%s[%d]\n", buf, cnt++);
 
@@ -82,11 +82,11 @@ int main(int argc, char *argv[])
 		const char *main_msg = "Main Process";
 		while (1)
 		{
-			ret = read(sockets[1], buf, READ_BUF_SIZE);
+			ret = recv(sockets[1], buf, READ_BUF_SIZE, MSG_WAITALL);
 			buf[ret] = '\0';
 			printf("%s[%d]\n", buf, cnt++);
 
-			ret = write(sockets[1], main_msg, strlen(main_msg));
+			ret = send(sockets[1], main_msg, strlen(main_msg), MSG_WAITALL);
 		}
 
 	}
@@ -97,11 +97,11 @@ int main(int argc, char *argv[])
 
 	while (1)
 	{
-		ret = read(fd, buf, READ_BUF_SIZE);
+		ret = recv(fd, buf, READ_BUF_SIZE, MSG_WAITALL);
 		buf[ret] = '\0';
 		printf("%s[%d]\n", buf, cnt++);
 
-		ret = write(fd, msg, strlen(msg));
+		ret = send(fd, msg, strlen(msg), MSG_WAITALL);
 	}
 #endif
 	return 0;
