@@ -154,3 +154,11 @@ DRAM电路比SRAM简单,存储容量可以做得更大,但DRAM的访问速度比
 # SocketPair
 
 ![sockpair](./pngs/socketpair.png)
+
+线程版本
+
+gcc socketpair.c -lpthread
+
+进程版本
+
+gcc socketpair.c -DFORK_VERSION
