@@ -20,8 +20,28 @@ struct test {
 	char d;
 };
 
+void foo(int *c)
+{
+	struct test *pt;
+
+	pt = my_container_of(c, struct test, c);
+	printf("a = %d\n", pt->a);
+	printf("b = %d\n", pt->b);
+	printf("c = %d\n", pt->c);
+	printf("d = %c\n", pt->d);
+}
+
 int main(int argc, char **argv)
 {
+#ifdef INSTANCE
+	struct test t;
+	t.a = 1;
+	t.b = 2;
+	t.c = 3;
+	t.d = 'd';
+	foo(&t.c);
+	return 0;
+#else
 	struct test t;
 	printf("test = %p\n", &t);
 	printf("test.c = %p\n", &(t.c));
@@ -49,4 +69,5 @@ int main(int argc, char **argv)
 	printf("struct test address is %p\n", my_container_of(&t.d, struct test, d));
 
 	return 0;
+#endif
 }
