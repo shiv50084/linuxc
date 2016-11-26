@@ -8,8 +8,8 @@ struct list_head {
 };
 
 static void __list_add(struct list_head *new,
-			      struct list_head *prev,
-			      struct list_head *next)
+		struct list_head *prev,
+		struct list_head *next)
 {
 	next->prev = new;
 	new->next = next;
@@ -33,8 +33,8 @@ static inline void list_add(struct list_head *new, struct list_head *head)
 	struct list_head name = LIST_HEAD_INIT(name)
 
 #define container_of(ptr, type, member) ({			\
-	const typeof( ((type *)0)->member ) *__mptr = (ptr);	\
-	(type *)( (char *)__mptr - offsetof(type,member) );})
+		const typeof( ((type *)0)->member ) *__mptr = (ptr);	\
+		(type *)( (char *)__mptr - offsetof(type,member) );})
 
 #define list_entry(ptr, type, member) \
 	container_of(ptr, type, member)
@@ -47,8 +47,8 @@ static inline void list_add(struct list_head *new, struct list_head *head)
 
 #define list_for_each_entry(pos, head, member)				\
 	for (pos = list_first_entry(head, typeof(*pos), member);	\
-	     &pos->member != (head);					\
-	     pos = list_next_entry(pos, member))
+			&pos->member != (head);					\
+			pos = list_next_entry(pos, member))
 
 #define list_prev_entry(pos, member) \
 	list_entry((pos)->member.prev, typeof(*(pos)), member)
@@ -58,8 +58,8 @@ static inline void list_add(struct list_head *new, struct list_head *head)
 
 #define list_for_each_entry_reverse(pos, head, member)			\
 	for (pos = list_last_entry(head, typeof(*pos), member);		\
-	     &pos->member != (head); 					\
-	     pos = list_prev_entry(pos, member))
+			&pos->member != (head); 					\
+			pos = list_prev_entry(pos, member))
 
 static LIST_HEAD(person_list);
 struct person
@@ -99,22 +99,54 @@ void check_person_list(int reverse)
 {
 	struct person *ps;
 
+	printf("----------PLAYER'S INFO--------------\n");
 	if (reverse)
 		list_for_each_entry_reverse(ps, &person_list, list)
 			printf("%s[%d]\n", ps->name, ps->number);
 	else
 		list_for_each_entry(ps, &person_list, list)
 			printf("%s[%d]\n", ps->name, ps->number);
+	printf("----------PLAYER'S INFO--------------\n");
 }
 
 int main(int argc, char *argv[])
 {
-	int i;
+	int ch;
+	char name[20];
+	int to_tail = 0;
+	int number = -1;
 
-	/* add player to the list */
-	for (i = 0; i < sizeof(players) / sizeof(players[0]); i++)
-		add_person(players[i], i, 0);
+	do
+	{
+		printf("=========kenrle list==========\n");
+		printf("(q)uit the system\n");
+		printf("(a)dd a player to the list\n");
+		printf("(l)ist all players' info\n");
+		printf("(r)everse print player's info\n");
+		printf("=========kenrle list==========\n");
 
-	check_person_list(0);
+		switch (ch)
+		{
+			case 'a':
+				printf("Enter Name:");
+				scanf("%s", name);
+				printf("Enter Number: ");
+				scanf("%d", &number);
+				printf("add to tail? default not, <0 | 1>: ");
+				scanf("%d", &to_tail);
+				add_person(name, number, to_tail);
+				break;
+			case 'l':
+				check_person_list(0);
+				break;
+			case 'r':
+				check_person_list(1);
+				break;
+			default:
+				break;
+		}
+
+	} while ((ch = getchar()) != 'q');
+
 	return 0;
 }
