@@ -53,7 +53,8 @@ void check_person_list(int reverse)
 	printf("----------PLAYER'S INFO--------------\n");
 }
 
-void delete_person(void)
+/* return zero on success and error code upon failure */
+int delete_person(void)
 {
 	struct person *ps;
 	char name[20];
@@ -70,9 +71,15 @@ void delete_person(void)
 	}
 
 	if (delete_person_found)
+	{
 		list_del(&ps->list);
+		free(ps);
+		ps = NULL;
+		return 0;
+	}
 
 	printf("No this guy :(\n");
+	return -1;
 }
 
 int main(int argc, char *argv[])
