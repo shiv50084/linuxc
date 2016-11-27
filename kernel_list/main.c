@@ -82,6 +82,37 @@ int delete_person(void)
 	return -1;
 }
 
+/* find out prev and next person */
+int neighbour_of(void)
+{
+	struct person *ps;
+	struct person *prev;
+	struct person *next;
+	char name[20];
+	int mid_person_found = 0;
+
+	printf("Enter Name :");
+	scanf("%s", name);
+	list_for_each_entry(ps, &person_list, list) {
+		if (!strcmp(name, ps->name))
+		{
+			mid_person_found = 1;
+			break;
+		}
+	}
+
+	if (mid_person_found)
+	{
+		prev = container_of(ps->list.prev, struct person, list);
+		next = container_of(ps->list.next, struct person, list);
+		printf("Prev : %s, Next : %s\n", prev->name, next->name);
+		return 0;
+	}
+
+	printf("No this guy :(\n");
+	return -1;
+}
+
 int main(int argc, char *argv[])
 {
 	int ch;
@@ -97,6 +128,7 @@ int main(int argc, char *argv[])
 		printf("(l)ist all players' info\n");
 		printf("(r)everse print player's info\n");
 		printf("(d)elte a player\n");
+		printf("(n)eighbour of\n");
 		printf("=========kenrle list==========\n");
 
 		switch (ch)
@@ -118,6 +150,9 @@ int main(int argc, char *argv[])
 				break;
 			case 'd':
 				delete_person();
+				break;
+			case 'n':
+				neighbour_of();
 				break;
 			default:
 				break;
