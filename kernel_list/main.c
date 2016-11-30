@@ -3,7 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "operations.h"
+extern void add_person(const char *person_name, int number, int to_tail);
+extern void check_person_list(int reverse);
+extern int delete_person(void);
+extern int neighbour_of(void);
 
 int main(int argc, char *argv[])
 {

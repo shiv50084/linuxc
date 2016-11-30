@@ -2,7 +2,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
-#include "project_common.h"
+#include <project_common.h>
 
 /* add a person to the person list */
 void add_person(const char *person_name, int number, int to_tail)
