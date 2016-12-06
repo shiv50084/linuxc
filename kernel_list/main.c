@@ -5,42 +5,32 @@
 
 extern struct display_module *display_get_module(const char *name);
 
+const char *module_name[] = {"fb_name", "crt_name"};
+
 int main(int argc, char *argv[])
 {
 	int var;
-	const char *name = "fb_name";
-	const char *crt_name = "crt_name";
 	struct display_module *pModule;
+	int i;
 
-	/* 初始化各子系统 */
+	/* 初始化各子系统及其模块 */
 	display_init();
 	display_modules_init();
 
-	pModule = display_get_module(name);
+	for (i = 0; i < sizeof(module_name) / sizeof(module_name[0]); i++)
+	{
+		pModule = display_get_module(module_name[i]);
 
+		/* 调用子系统提供的接口函数 */
+		display_InfoShow(pModule);
 
-	/* 调用子系统提供的接口函数 */
-	display_InfoShow(pModule);
+		display_getVar(pModule, &var);
+		printf("var = %d\n", var);
 
-	display_getVar(pModule, &var);
-	printf("var = %d\n", var);
-
-	display_setVar(pModule, 999);
-	display_getVar(pModule, &var);
-	printf("var = %d\n", var);
-
-	/* call crt */
-	pModule = display_get_module(crt_name);
-
-	/* 调用子系统提供的接口函数 */
-	display_InfoShow(pModule);
-
-	display_getVar(pModule, &var);
-	printf("var = %d\n", var);
-
-	display_setVar(pModule, 89);
-	display_getVar(pModule, &var);
-	printf("var = %d\n", var);
+		display_setVar(pModule, 999);
+		display_getVar(pModule, &var);
+		printf("var = %d\n", var);
+	}
 
 	return 0;
 }
