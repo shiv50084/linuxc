@@ -17,9 +17,9 @@ static void MODULE_getVar(int *out)
 	*out = bModule.var;
 }
 
-static void MODULE_printInfo(void)
+static void MODULE_printInfo(const char *name)
 {
-	printf("%s, %d\n", __FUNCTION__, __LINE__);
+	printf("<%s> : %s\n", name, __FUNCTION__);
 }
 
 static struct MODULE_module bModule = {

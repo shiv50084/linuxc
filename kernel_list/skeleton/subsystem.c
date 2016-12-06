@@ -8,14 +8,14 @@
 /* 将该子系统里所有模块都装入链表 */
 LIST_HEAD(MODULE_list);
 
-struct MODULE_module *get_module(const char *name)
+struct MODULE_module *SUBSYSTEM_get_module(const char *name)
 {
-	struct MODULE_module *pbModule;
+	struct MODULE_module *pModule;
 
-	list_for_each_entry(pbModule, &MODULE_list, list)
+	list_for_each_entry(pModule, &MODULE_list, list)
 	{
-		if (!strcmp(name, pbModule->name))
-			return pbModule;
+		if (!strcmp(name, pModule->name))
+			return pModule;
 	}
 
 	return NULL;
@@ -35,23 +35,17 @@ int SUBSYSTEM_init(void)
 	MODULE_init();
 }
 
-void SUBSYSTEM_InfoShow(const char *name)
+void SUBSYSTEM_InfoShow(struct MODULE_module *pModule)
 {
-	struct MODULE_module *pbModule;
-	pbModule = get_module(name);
-	pbModule->printInfo();
+	pModule->printInfo(pModule->name);
 }
 
-void SUBSYSTEM_setVar(const char *name, int in)
+void SUBSYSTEM_setVar(struct MODULE_module *pModule, int in)
 {
-	struct MODULE_module *pbModule;
-	pbModule = get_module(name);
-	pbModule->setVar(in);
+	pModule->setVar(in);
 }
 
-void SUBSYSTEM_getVar(const char *name, int *out)
+void SUBSYSTEM_getVar(struct MODULE_module *pModule, int *out)
 {
-	struct MODULE_module *pbModule;
-	pbModule = get_module(name);
-	pbModule->getVar(out);
+	pModule->getVar(out);
 }
