@@ -5,6 +5,7 @@
 
 int main(int argc, char *argv[])
 {
+	int var;
 	const char *name = "MODULE_name";
 
 	/* 初始化各子系统 */
@@ -12,5 +13,13 @@ int main(int argc, char *argv[])
 
 	/* 调用子系统提供的接口函数 */
 	SUBSYSTEM_InfoShow(name);
+
+	SUBSYSTEM_getVar(name, &var);
+	printf("var = %d\n", var);
+
+	SUBSYSTEM_setVar(name, 999);
+
+	SUBSYSTEM_getVar(name, &var);
+	printf("var = %d\n", var);
 	return 0;
 }

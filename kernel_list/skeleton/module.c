@@ -5,6 +5,18 @@
 
 #include "subsystem.h"
 
+static struct MODULE_module bModule;
+
+static void MODULE_setVar(int in)
+{
+	bModule.var = in;
+}
+
+static void MODULE_getVar(int *out)
+{
+	*out = bModule.var;
+}
+
 static void MODULE_printInfo(void)
 {
 	printf("%s, %d\n", __FUNCTION__, __LINE__);
@@ -12,7 +24,10 @@ static void MODULE_printInfo(void)
 
 static struct MODULE_module bModule = {
 	.name = "MODULE_name",
+	.var = -1,
 	.printInfo = MODULE_printInfo,
+	.setVar = MODULE_setVar,
+	.getVar = MODULE_getVar,
 };
 
 int MODULE_init(void)

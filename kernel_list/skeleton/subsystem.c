@@ -41,3 +41,17 @@ void SUBSYSTEM_InfoShow(const char *name)
 	pbModule = get_module(name);
 	pbModule->printInfo();
 }
+
+void SUBSYSTEM_setVar(const char *name, int in)
+{
+	struct MODULE_module *pbModule;
+	pbModule = get_module(name);
+	pbModule->setVar(in);
+}
+
+void SUBSYSTEM_getVar(const char *name, int *out)
+{
+	struct MODULE_module *pbModule;
+	pbModule = get_module(name);
+	pbModule->getVar(out);
+}
