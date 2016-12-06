@@ -24,8 +24,9 @@ project_common.h 项目公共数据头文件
 
 其中显示子系统里有模块(fb)
 
-subsystem : display
-module : fb
+subsystem : display_ss.c _ss表示subsystem后缀
+
+module : fb_md.c _md表示module后缀
 
 新建一个子系统
 
