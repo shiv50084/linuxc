@@ -33,5 +33,5 @@ static struct SUBSYSTEM_module bModule = {
 int MODULE_init(void)
 {
 	/* 调用子系统提供的注册接口向子系统注册模块 */
-	return MODULE_register(&bModule.list);
+	return SUBSYSTEM_register(&bModule.list);
 }

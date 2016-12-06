@@ -22,7 +22,7 @@ struct SUBSYSTEM_module *SUBSYSTEM_get_module(const char *name)
 }
 
 /* 开放给底层具体模块的注册接口 */
-int MODULE_register(struct list_head *list)
+int SUBSYSTEM_register(struct list_head *list)
 {
 	list_add(list, &SUBSYSTEM_list);
 	return 0;
