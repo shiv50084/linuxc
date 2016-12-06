@@ -3,16 +3,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "SUBSYSTEM.h"
+#include "SUBSYSTEM_ss.h"
 
 /* 将该子系统里所有模块都装入链表 */
-LIST_HEAD(SUBSYSTEM_MODULE_list);
+LIST_HEAD(SUBSYSTEM_list);
 
 struct SUBSYSTEM_module *SUBSYSTEM_get_module(const char *name)
 {
 	struct SUBSYSTEM_module *pModule;
 
-	list_for_each_entry(pModule, &SUBSYSTEM_MODULE_list, list)
+	list_for_each_entry(pModule, &SUBSYSTEM_list, list)
 	{
 		if (!strcmp(name, pModule->name))
 			return pModule;
@@ -24,7 +24,7 @@ struct SUBSYSTEM_module *SUBSYSTEM_get_module(const char *name)
 /* 开放给底层具体模块的注册接口 */
 int MODULE_register(struct list_head *list)
 {
-	list_add(list, &SUBSYSTEM_MODULE_list);
+	list_add(list, &SUBSYSTEM_list);
 	return 0;
 }
 

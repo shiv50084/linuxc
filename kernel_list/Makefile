@@ -18,11 +18,12 @@ LDFLAGS :=
 
 TOPDIR := $(shell pwd)
 
-TARGET := klist
+TARGET := app_skeleton
 
 obj-y += main.o
 obj-y += ops/
 obj-y += skeleton/
+obj-y += display/
 
 all :
 	make -C ./ -f $(TOPDIR)/Makefile.build
