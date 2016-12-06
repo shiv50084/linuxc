@@ -12,6 +12,7 @@ struct display_module {
 	void (*printInfo)(const char *name);
 	void (*setVar)(int in);
 	void (*getVar)(int *out);
+	void (*initDevice)(struct display_module *p);
 
 	struct list_head list;
 };

@@ -21,6 +21,18 @@ struct display_module *display_get_module(const char *name)
 	return NULL;
 }
 
+/* 调用各个子模块的初始化函数 */
+void display_modules_init(void)
+{
+	struct display_module *pModule;
+
+	list_for_each_entry(pModule, &display_list, list)
+	{
+		if (pModule->initDevice)
+			pModule->initDevice(pModule);
+	}
+}
+
 /* 开放给底层具体模块的注册接口 */
 int display_register(struct list_head *list)
 {

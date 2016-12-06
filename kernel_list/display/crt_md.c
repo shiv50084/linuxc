@@ -22,12 +22,18 @@ static void crt_printInfo(const char *name)
 	printf("<%s> : %s\n", name, __FUNCTION__);
 }
 
+static void crt_initDevice(struct display_module *p)
+{
+	printf("%s val = %d\n", p->name, p->var);
+}
+
 static struct display_module bModule = {
 	.name = "crt_name",
 	.var = -1,
 	.printInfo = crt_printInfo,
 	.setVar = crt_setVar,
 	.getVar = crt_getVar,
+	.initDevice = crt_initDevice,
 };
 
 int crt_init(void)

@@ -14,8 +14,10 @@ int main(int argc, char *argv[])
 
 	/* 初始化各子系统 */
 	display_init();
+	display_modules_init();
 
 	pModule = display_get_module(name);
+
 
 	/* 调用子系统提供的接口函数 */
 	display_InfoShow(pModule);
