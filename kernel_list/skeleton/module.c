@@ -5,7 +5,7 @@
 
 #include "subsystem.h"
 
-static struct MODULE_module bModule;
+static struct SUBSYSTEM_module bModule;
 
 static void MODULE_setVar(int in)
 {
@@ -22,7 +22,7 @@ static void MODULE_printInfo(const char *name)
 	printf("<%s> : %s\n", name, __FUNCTION__);
 }
 
-static struct MODULE_module bModule = {
+static struct SUBSYSTEM_module bModule = {
 	.name = "MODULE_name",
 	.var = -1,
 	.printInfo = MODULE_printInfo,

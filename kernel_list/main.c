@@ -3,13 +3,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern struct MODULE_module *SUBSYSTEM_get_module(const char *name);
+extern struct SUBSYSTEM_module *SUBSYSTEM_get_module(const char *name);
 
 int main(int argc, char *argv[])
 {
 	int var;
 	const char *name = "MODULE_name";
-	struct MODULE_module *pModule;
+	struct SUBSYSTEM_module *pModule;
 
 	/* 初始化各子系统 */
 	SUBSYSTEM_init();

@@ -3,7 +3,7 @@
 
 #include "klist.h"
 
-struct MODULE_module {
+struct SUBSYSTEM_module {
 	/* variables */
 	char name[20];
 	int var;

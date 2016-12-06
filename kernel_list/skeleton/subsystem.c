@@ -8,9 +8,9 @@
 /* 将该子系统里所有模块都装入链表 */
 LIST_HEAD(MODULE_list);
 
-struct MODULE_module *SUBSYSTEM_get_module(const char *name)
+struct SUBSYSTEM_module *SUBSYSTEM_get_module(const char *name)
 {
-	struct MODULE_module *pModule;
+	struct SUBSYSTEM_module *pModule;
 
 	list_for_each_entry(pModule, &MODULE_list, list)
 	{
@@ -35,17 +35,17 @@ int SUBSYSTEM_init(void)
 	MODULE_init();
 }
 
-void SUBSYSTEM_InfoShow(struct MODULE_module *pModule)
+void SUBSYSTEM_InfoShow(struct SUBSYSTEM_module *pModule)
 {
 	pModule->printInfo(pModule->name);
 }
 
-void SUBSYSTEM_setVar(struct MODULE_module *pModule, int in)
+void SUBSYSTEM_setVar(struct SUBSYSTEM_module *pModule, int in)
 {
 	pModule->setVar(in);
 }
 
-void SUBSYSTEM_getVar(struct MODULE_module *pModule, int *out)
+void SUBSYSTEM_getVar(struct SUBSYSTEM_module *pModule, int *out)
 {
 	pModule->getVar(out);
 }
