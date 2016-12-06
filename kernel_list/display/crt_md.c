@@ -7,30 +7,30 @@
 
 static struct display_module bModule;
 
-static void fb_setVar(int in)
+static void crt_setVar(int in)
 {
 	bModule.var = in;
 }
 
-static void fb_getVar(int *out)
+static void crt_getVar(int *out)
 {
 	*out = bModule.var;
 }
 
-static void fb_printInfo(const char *name)
+static void crt_printInfo(const char *name)
 {
 	printf("<%s> : %s\n", name, __FUNCTION__);
 }
 
 static struct display_module bModule = {
-	.name = "fb_name",
+	.name = "crt_name",
 	.var = -1,
-	.printInfo = fb_printInfo,
-	.setVar = fb_setVar,
-	.getVar = fb_getVar,
+	.printInfo = crt_printInfo,
+	.setVar = crt_setVar,
+	.getVar = crt_getVar,
 };
 
-int fb_init(void)
+int crt_init(void)
 {
 	/* 调用子系统提供的注册接口向子系统注册模块 */
 	return display_register(&bModule.list);

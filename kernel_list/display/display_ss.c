@@ -22,7 +22,7 @@ struct display_module *display_get_module(const char *name)
 }
 
 /* 开放给底层具体模块的注册接口 */
-int fb_register(struct list_head *list)
+int display_register(struct list_head *list)
 {
 	list_add(list, &display_list);
 	return 0;
@@ -33,6 +33,7 @@ int display_init(void)
 {
 	/* 调用个模块初始化函数 */
 	fb_init();
+	crt_init();
 }
 
 void display_InfoShow(struct display_module *pModule)

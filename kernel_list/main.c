@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 {
 	int var;
 	const char *name = "fb_name";
+	const char *crt_name = "crt_name";
 	struct display_module *pModule;
 
 	/* 初始化各子系统 */
@@ -23,6 +24,19 @@ int main(int argc, char *argv[])
 	printf("var = %d\n", var);
 
 	display_setVar(pModule, 999);
+	display_getVar(pModule, &var);
+	printf("var = %d\n", var);
+
+	/* call crt */
+	pModule = display_get_module(crt_name);
+
+	/* 调用子系统提供的接口函数 */
+	display_InfoShow(pModule);
+
+	display_getVar(pModule, &var);
+	printf("var = %d\n", var);
+
+	display_setVar(pModule, 89);
 	display_getVar(pModule, &var);
 	printf("var = %d\n", var);
 
