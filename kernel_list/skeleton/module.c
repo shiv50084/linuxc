@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "subsystem.h"
+#include "SUBSYSTEM.h"
 
 static struct SUBSYSTEM_module bModule;
 
