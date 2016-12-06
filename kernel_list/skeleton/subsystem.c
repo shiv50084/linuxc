@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "subsystem.h"
+
+/* 将该子系统里所有模块都装入链表 */
+LIST_HEAD(MODULE_list);
+
+struct MODULE_module *get_module(const char *name)
+{
+	struct MODULE_module *pbModule;
+
+	list_for_each_entry(pbModule, &MODULE_list, list)
+	{
+		if (!strcmp(name, pbModule->name))
+			return pbModule;
+	}
+
+	return NULL;
+}
+
+/* 开放给底层具体模块的注册接口 */
+int MODULE_register(struct list_head *list)
+{
+	list_add(list, &MODULE_list);
+	return 0;
+}
+
+/* 开放给应用层调用 */
+int SUBSYSTEM_init(void)
+{
+	/* 调用个模块初始化函数 */
+	MODULE_init();
+}
+
+void SUBSYSTEM_InfoShow(const char *name)
+{
+	struct MODULE_module *pbModule;
+	pbModule = get_module(name);
+	pbModule->printInfo();
+}

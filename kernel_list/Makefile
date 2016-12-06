@@ -22,6 +22,7 @@ TARGET := klist
 
 obj-y += main.o
 obj-y += ops/
+obj-y += skeleton/
 
 all :
 	make -C ./ -f $(TOPDIR)/Makefile.build
