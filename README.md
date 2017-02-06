@@ -1,49 +1,5 @@
 # linuxc
 
-## 线程
-
-线程共享以下进程资源
-
-- 文件描述符表
-- 每种信号的处理方式(SIG_IGN SIG_DFL或自定义的信号处理函数)
-- 当前工作目录
-- 用户id和组id
-
-但是有些资源每个线程各有一份
-
-- 线程id
-- 上下文,包括各寄存器的值,程序计数器和栈指针
-- 栈空间
-- errno变量
-- 信号屏蔽字
-- 调度优先级
-
-### 关于id
-
-- 进程id的类型是pid_t,每个进程的id在整个系统中是唯一的,调用getpid可以获得当前进程的id
-- 线程id的类型是thread_t,它在当前进程中保证唯一,在不同系统中thread_t有不同的实现,可能是一个整数,也可能是一个结构体,也可能是一个地址,所以不能简单的当成整数用printf打印,调用pthread_self可以获得当前线程的id
-
-### 终止线程
-
-只终止某个线程而不终止整个进程
-
-- 从线程函数return(对主线程不合适)
-- 一个线程可以调用pthread_cancel终止同一个进程中的另一个线程(分同步和异步)
-- 线程可以调用pthread_exit终止自己
-
-### pthread_join
-
-	int pthrad_join(pthread_t thread, void **value_ptr);
-
-调用该函数的线程将挂起等待,知道id为thread的线程终止
-thread线程以不同的方法终止,通过pthread_join得到的终止状态是不同的
-
-- 如果thread线程通过return返回,value_ptr所指向的单元里存放的是thread线程函数的返回值
-- 如果thread线程被别的线程调用pthread_cancel异常终止掉,value_ptr所指向的单元里存放的是常数PTHREAD——CANCELED
-- 如果thread线程是自己调用pthread_exit终止的,value_ptr所指向的单元存放的是传递给pthread_exit的参数
-
-如果对thread线程的终止状态不感兴趣,可以传NULL给value_ptr参数
-
 ## getopt
 
 ```shell
@@ -108,7 +64,7 @@ echo bbb > tmp/2
 rm tmp/3
 ```
 
-#内核如何实现信号的捕捉
+##内核如何实现信号的捕捉
 如果信号的处理动作是用户自定义函数,在信号递达时就调用这个函数,这称为捕捉信号.  
 由于信号处理函数的代码是在用户空间的,处理过程比较复杂,举例如下:  
 
@@ -124,7 +80,8 @@ rm tmp/3
 ![kernel catch signal](./pngs/signal.png)
 
 
-#使用二级指针巧妙删除链表节点
+##使用二级指针巧妙删除链表节点
+
 ```c
 /*
  * delete 的优化版本
@@ -149,44 +106,70 @@ void delete_plus(struct node *p)
 
 ![delete](./pngs/delete.png)
 
-#进程
-+ 在各自独立的地址空间中运行
-+ 共享数据需要mmap或者进程间通信机制
 
-#线程
-###需要在一个进程中同时执行多个控制流程就要用到线程
-###进程里的信号处理函数也可以,只是线程更为灵活
-###因为信号处理函数的控制流程只是在信号达到的时候产生
-###在处理完信号后就结束,多线程的控制流程可以长期并存
-###各线程之间共享的资源和环境:
-+ 文件描述符表
-+ 每种信号的处理方式(SIG_IGN、SIG_DFL 或者自定义的信号处理函数)
-+ 当前工作目录
-+ 用户 id 和组 id
+## 进程
+- 在各自独立的地址空间中运行
+- 共享数据需要mmap或者进程间通信机制
 
-##但有些资源是每个线程各有一份的:
-+ 线程 id
-+ 上下文,包括各种寄存器的值、程序计数器和栈指针
-+ 栈空间
-+ errno 变量
-+ 信号屏蔽字
-+ 调度优先级
+## 线程
 
-#Mutex(线程间同步)
+线程共享以下进程资源
+
+- 文件描述符表
+- 每种信号的处理方式(SIG_IGN SIG_DFL或自定义的信号处理函数)
+- 当前工作目录
+- 用户id和组id
+
+但是有些资源每个线程各有一份
+
+- 线程id
+- 上下文,包括各寄存器的值,程序计数器和栈指针
+- 栈空间
+- errno变量
+- 信号屏蔽字
+- 调度优先级
+
+### 关于id
+
+- 进程id的类型是pid_t,每个进程的id在整个系统中是唯一的,调用getpid可以获得当前进程的id
+- 线程id的类型是thread_t,它在当前进程中保证唯一,在不同系统中thread_t有不同的实现,可能是一个整数,也可能是一个结构体,也可能是一个地址,所以不能简单的当成整数用printf打印,调用pthread_self可以获得当前线程的id
+
+### 终止线程
+
+只终止某个线程而不终止整个进程
+
+- 从线程函数return(对主线程不合适)
+- 一个线程可以调用pthread_cancel终止同一个进程中的另一个线程(分同步和异步)
+- 线程可以调用pthread_exit终止自己
+
+### pthread_join
+
+	int pthrad_join(pthread_t thread, void **value_ptr);
+
+调用该函数的线程将挂起等待,知道id为thread的线程终止
+thread线程以不同的方法终止,通过pthread_join得到的终止状态是不同的
+
+- 如果thread线程通过return返回,value_ptr所指向的单元里存放的是thread线程函数的返回值
+- 如果thread线程被别的线程调用pthread_cancel异常终止掉,value_ptr所指向的单元里存放的是常数PTHREAD——CANCELED
+- 如果thread线程是自己调用pthread_exit终止的,value_ptr所指向的单元存放的是传递给pthread_exit的参数
+
+如果对thread线程的终止状态不感兴趣,可以传NULL给value_ptr参数
+
+## Mutex(线程间同步)
 写程序时应该尽量避免同时获得多个锁,如果一定有必要这么做,则有一个原则:
 
-###如果所有线程在需要多个锁时都按相同的先后顺序(常见的是按Mutex变量的地址顺序)获得锁, 则不会出现死锁。
+### 如果所有线程在需要多个锁时都按相同的先后顺序(常见的是按Mutex变量的地址顺序)获得锁, 则不会出现死锁。
 
 比如一个程序中用到锁 1、锁 2、锁 3,它们所对应的Mutex 变量的地址
 是 锁1< 锁2< 锁3,那么所有线程在需要同时获得 2 个或 3 个锁时都应该按锁1、锁2、锁 3的顺序获得。
 如果要为所有的锁确定一个先后顺序比较困难,则应该尽量使用 pthread_mutex_trylock调用代替pthread_mutex_lock调用,以免死锁。
 
-#信号量(Semaphore)
+## 信号量(Semaphore)
 信号量(Semaphore)和Mutex类似,表示可用资源的数量,和Mutex不同的是这个数量可以大于1
 本节介绍的是 POSIX semaphore 库函数,详见sem_overview(7)
 这种信号量不仅可用于同一进程的线程间同步,也可用于不同进程间的同步.
 
-#内存分配
+## 内存分配
 C标准库里的3个分配函数
 malloc 不负责把分配的内存空间清零
 calloc 会负责把分配的内存空间用字节0填充
@@ -199,17 +182,17 @@ alloca
 所以不需要free
 这个函数不属于 C 标准库,而是在 POSIX 标准中定义的。
 
-#段错误的产生流程
+## 段错误的产生流程
 1. 用户程序要访问的一个虚拟地址,经MMU检查无权访问.
 2. MMU 产生一个异常,CPU 从用户模式切换到特权模式,跳转到内核代码中执行异常服务程序.
 3. 内核把这个异常解释为段错误,把引发异常的进程终止掉.
 
-#SRAM and DRAM
+## SRAM and DRAM
 SRAM static RAM(CPU的Cache通常由SRAM组成)
 DRAM dynamic RAM(内存通常由DRAM组成)
 DRAM电路比SRAM简单,存储容量可以做得更大,但DRAM的访问速度比SRAM慢.
 
-# SocketPair
+## SocketPair
 
 ![sockpair](./pngs/socketpair.png)
 
