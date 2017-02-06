@@ -1,5 +1,49 @@
 # linuxc
 
+## 线程
+
+线程共享以下进程资源
+
+- 文件描述符表
+- 每种信号的处理方式(SIG_IGN SIG_DFL或自定义的信号处理函数)
+- 当前工作目录
+- 用户id和组id
+
+但是有些资源每个线程各有一份
+
+- 线程id
+- 上下文,包括各寄存器的值,程序计数器和栈指针
+- 栈空间
+- errno变量
+- 信号屏蔽字
+- 调度优先级
+
+### 关于id
+
+- 进程id的类型是pid_t,每个进程的id在整个系统中是唯一的,调用getpid可以获得当前进程的id
+- 线程id的类型是thread_t,它在当前进程中保证唯一,在不同系统中thread_t有不同的实现,可能是一个整数,也可能是一个结构体,也可能是一个地址,所以不能简单的当成整数用printf打印,调用pthread_self可以获得当前线程的id
+
+### 终止线程
+
+只终止某个线程而不终止整个进程
+
+- 从线程函数return(对主线程不合适)
+- 一个线程可以调用pthread_cancel终止同一个进程中的另一个线程(分同步和异步)
+- 线程可以调用pthread_exit终止自己
+
+### pthread_join
+
+	int pthrad_join(pthread_t thread, void **value_ptr);
+
+调用该函数的线程将挂起等待,知道id为thread的线程终止
+thread线程以不同的方法终止,通过pthread_join得到的终止状态是不同的
+
+- 如果thread线程通过return返回,value_ptr所指向的单元里存放的是thread线程函数的返回值
+- 如果thread线程被别的线程调用pthread_cancel异常终止掉,value_ptr所指向的单元里存放的是常数PTHREAD——CANCELED
+- 如果thread线程是自己调用pthread_exit终止的,value_ptr所指向的单元存放的是传递给pthread_exit的参数
+
+如果对thread线程的终止状态不感兴趣,可以传NULL给value_ptr参数
+
 ## getopt
 
 ```shell
