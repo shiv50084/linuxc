@@ -1,10 +1,3 @@
-# Advanced Programming in the UNIX Environment
-
-## IPC
-
-创建一个从父进程到子进程的管道,并且父进程向子进程传递数据
-
-```c
 #include "apue.h"
 
 const char *msg1 = "This is parent speaking\n";
@@ -37,4 +30,3 @@ int main(int argc, char *argv[])
 
 	exit(0);
 }
-```

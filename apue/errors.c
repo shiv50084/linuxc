@@ -1,6 +1,6 @@
 #include <errno.h>
 #include <stdarg.h>
-#include "ourhdr.h"
+#include "apue.h"
 
 static void err_doit(int, const char *, va_list);
 char *pname = NULL;

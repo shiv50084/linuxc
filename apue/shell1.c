@@ -1,6 +1,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
-#include "ourhdr.h"
+#include "apue.h"
 
 int main(int argc, char *argv[])
 {
