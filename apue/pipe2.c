@@ -1,51 +1,3 @@
-# Advanced Programming in the UNIX Environment
-
-## IPC
-
-### 例子1
-
-创建一个从父进程到子进程的管道,并且父进程向子进程传递数据
-
-```c
-#include "apue.h"
-
-const char *msg1 = "This is parent speaking\n";
-
-int main(int argc, char *argv[])
-{
-	int rbyte;
-	int fd[2];
-	pid_t pid;
-	char line[MAXLINE];
-
-	if (pipe(fd) < 0)
-		err_sys("pipe error");
-
-	if ((pid = fork()) < 0)
-	{
-		err_sys("fork error");
-	}
-	else if (pid > 0) /* parent */
-	{
-		close(fd[0]);
-		write(fd[1], msg1, strlen(msg1));
-	}
-	else /* child */
-	{
-		close(fd[1]);
-		rbyte = read(fd[0], line, MAXLINE);
-		write(STDOUT_FILENO, line, rbyte);
-	}
-
-	exit(0);
-}
-```
-
-### 例子2
-
-下面程序每次显示一页数据,由于more具有这个功能,所以可以将输出的数据传递给more
-
-```c
 #include <sys/wait.h>
 #include "apue.h"
 
@@ -124,4 +76,3 @@ int main(int argc, char *argv[])
 
 	exit(0);
 }
-```
