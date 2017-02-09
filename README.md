@@ -1,5 +1,9 @@
 # linuxc
 
+## APUE
+
+[Linux高级编程](./apue/README.md)
+
 ## MMU
 
 虚拟内存管理起到什么作用
@@ -213,6 +217,3 @@ gcc socketpair.c -lpthread
 
 gcc socketpair.c -DFORK_VERSION
 
-## APUE
-
-[Linux高级编程](./apue/README.md)
