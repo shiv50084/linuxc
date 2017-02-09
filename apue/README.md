@@ -2,6 +2,6 @@
 
 ## 进程控制
 
-编译
+编译(直接在当前目录执行)
 
-	gcc proc_ctrl.c errors.c
+	make

@@ -1,12 +1,21 @@
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <signal.h>
 #include "ourhdr.h"
+
+void sig_int(int signo)
+{
+	printf("Interrupt\n");
+}
 
 int main(int argc, char *argv[])
 {
 	char buf[MAXLINE];
 	pid_t pid;
 	int status;
+
+	if (signal(SIGINT, sig_int) == SIG_ERR)
+		err_sys("signal error");
 
 	printf("%% ");
 	while (fgets(buf, MAXLINE, stdin) != NULL)
@@ -26,7 +35,7 @@ int main(int argc, char *argv[])
 		}
 
 		/* parent */
-		if (pid = waitpid(pid, &status, 0) < 0)
+		if ((pid = waitpid(pid, &status, 0)) < 0)
 			err_sys("waitpid error");
 
 		printf("%% ");
