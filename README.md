@@ -212,3 +212,7 @@ gcc socketpair.c -lpthread
 进程版本
 
 gcc socketpair.c -DFORK_VERSION
+
+## APUE
+
+[Linux高级编程](./apue/README.md)
