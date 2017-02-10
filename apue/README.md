@@ -172,3 +172,45 @@ int main(int argc, char *argv[])
 	exit(0);
 }
 ```
+
+### 例子4
+
+下面程序,向标准输出写一个提示
+然后从标准输入读入1行,使用popen可以在应用程序
+和输入之间插入一个程序以对输入进行处理,
+下面代码的处理程序是将大写字母转换为小写
+
+![popen1](./popen1.png)
+
+```c
+#include <sys/wait.h>
+#include "apue.h"
+
+int main(int argc, char *argv[])
+{
+	char line[MAXLINE];
+	FILE *fpin;
+
+	if ( (fpin = popen("./myuclc", "r")) == NULL )
+		err_sys("popen error");
+
+	for (;;)
+	{
+		fputs("prompt> ", stdout);
+		fflush(stdout);
+
+		/* read from pipe */
+		if (fgets(line, MAXLINE, fpin) == NULL)
+			break;
+
+		if (fputs(line, stdout) == EOF)
+			err_sys("fputs error to pipe");
+	}
+
+	if (pclose(fpin) == -1)
+		err_sys("pclose error");
+
+	putchar('\n');
+	exit(0);
+}
+```
