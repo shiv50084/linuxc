@@ -129,6 +129,11 @@ int main(int argc, char *argv[])
 ### 例子3
 
 函数popen先执行fork,然后调用exec执行cmdstring
+并且返回一个标准I/O文件指针
+如果type是"r",则文件指针连接到cmdstring的标准输出
+如果type是"w",则文件指针连接到cmdstring的标准输入
+
+![popen](./popen.png)
 
 ```c
 #include <sys/wait.h>
