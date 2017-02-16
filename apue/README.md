@@ -1,5 +1,33 @@
 # Advanced Programming in the UNIX Environment
 
+## I/O
+
+### 不用缓存的I/O
+
+函数open,read,write,lseek,close提供了不用缓存的I/O
+这些函数都用文件描述符进行工作
+
+```c
+#include "apue.h"
+
+#define BUFFSIZE 8192
+
+int main(int argc, char *argv[])
+{
+	int n;
+	char buf[BUFFSIZE];
+
+	while ( (n = read(STDIN_FILENO, buf, BUFFSIZE)) > 0 )
+		if ( (write(STDOUT_FILENO, buf, n)) != n )
+			err_sys("wrirte error");
+
+	if (n < 0)
+		err_sys("read error");
+
+	exit(0);
+}
+```
+
 ## IPC
 
 ### 例子1
