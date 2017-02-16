@@ -28,6 +28,28 @@ int main(int argc, char *argv[])
 }
 ```
 
+### 标准I/O
+
+标准I/O函数提供一种对不用缓存的I/O函数的带缓存的界面
+
+```c
+#include "apue.h"
+
+int main(int argc, char *argv[])
+{
+	int c;
+
+	while ( (c = getc(stdin)) != EOF )
+		if (putc(c, stdout) == EOF)
+			err_sys("output error");
+
+	if (ferror(stdin))
+		err_sys("input error");
+
+	exit(0);
+}
+```
+
 ## IPC
 
 ### 例子1
