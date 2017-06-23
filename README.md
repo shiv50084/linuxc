@@ -154,6 +154,18 @@ Linux内核的进程控制块是 task_struct 结构体,其中有如下信息
 
 创建守护进程最关键的一步是调用setsid函数创建一个新的Session,并成为Session Leader
 
+### 进程间通信
+
+- 父进程通过 fork 可以将打开文件的描述符传递给子进程
+- 子进程结束时,父进程调用 wait 可以得到子进程的终止信息
+- 几个进程可以在文件系统中读写某个共享文件,也可以通过给文件加锁来实现进程间同步
+- 进程之间互发信号,一般使用 SIGUSR1 和 SIGUSR2 实现用户自定义功能
+- 管道(pipe,只能在亲属进程间)
+- FIFO(有名管道,可以在不同进程间)
+- mmap 函数,几个进程可以映射同一内存区
+- SYSV IPC,以前的SYSV UNIX系统实现的IPC机制,包括消息队列,信号量和共享内存,现在已经基本废弃
+- UNIX Domain Socket,目前最广泛使用的 IPC 机制
+
 ## 线程
 
 线程共享以下进程资源
@@ -247,3 +259,14 @@ gcc socketpair.c -lpthread
 
 gcc socketpair.c -DFORK_VERSION
 
+## Workqueue and Tasklet
+
+[参考文章tasklet和workqueue ](http://blog.csdn.net/houxn22/article/details/45720247)
+
+### 两者之间存在一些非常重要的区别
+
+- tasklet在中断上下文中运行,因此所有的tasklet代码都必须是原子的
+
+- 工作队列函数在一个特殊内核进程的上下文中运行,因此它们具有更好的灵活性,尤其是工作队列函数可以休眠
+
+- tasklet始终运行在被初始提交的同一处理器上,但这只是工作队列的默认方式, 内核代码可以请求工作队列函数的执行延迟给定的时间间隔
