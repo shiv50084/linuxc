@@ -20,12 +20,21 @@
 int main(int argc, char *argv[])
 {
 	int opt;
+	int i;
 	const char *optstring = "a:bc:d::e";
 	printf("%s\n", optstring);
 
 	while ((opt = getopt(argc, argv, optstring)) != -1)
 	{
-		printf("opt = %c, optarg = %s, optind = %d, argv[%d] = %s\n", opt, optarg, optind, optind, argv[optind]);
+		printf("opt = %c\n", opt);
+
+		printf("optarg = %s\n", optarg);
+		for (i = 0; i < optind; i++)
+			printf("optarg[%d] = %c\t", i, optarg[i]);
+
+		printf("\noptind = %d\n", optind);
+		printf("argv[%d]\n", optind, argv[optind]);
 	}
+
 	return 0;
 }
