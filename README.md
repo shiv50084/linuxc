@@ -275,7 +275,7 @@ gcc socketpair.c -DFORK_VERSION
 
 ![区别如图](./irq_buttom.png)
 
-### 以字节位单位的I/O函数
+## 以字节位单位的I/O函数
 
 [代码例子](./misc/byte_io.c)
 
@@ -299,3 +299,15 @@ fputc使用说明
 
 - 要用fputc函数写一个文件,该文件的打开方式必须是可写的(包括追加)
 - 每调用一次fputc,读写位置向后移动一个字节,因此可以连续多次调用fputc函数依次写入多个字节,但如果文件是以追加方式打开的,每次调用fputc时总是将读写位置移到文件末尾然后把要写入的字节追加到后面
+
+## 以字符串为单位的I/O函数(fputs,fgets)
+
+[参考代码](./misc/record.c)
+
+## 以记录为单位的I/O函数
+
+[read参考代码](./misc/record_read.c)
+
+[write参考代码](./misc/record_write.c)
+
+fread和fwrite用于读写记录,这里的记录是指一串固定长度的字节,比如一个int,一个结构体或者一个定长数组,参数size指出一条记录的长度, nmemb指出要读或写多少条记录,这些记录在ptr所指的内存空间中连续存放

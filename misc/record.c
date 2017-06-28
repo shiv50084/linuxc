@@ -24,6 +24,10 @@ typedef struct {
 	int ss;
 }Record_t;
 
+/*
+ * 每一秒中向log.txt中追加一条记录
+ * 测试 tail -f log.txt
+ */
 int main(int argc, char *argv[])
 {
 	int isNotEmptyFile = 0;
