@@ -34,12 +34,12 @@ float get_cpu_clock_speed()
 	/* Parse the line to extrace the clock speed.  */
 	sscanf(match, "cpu MHz : %f", &clock_speed);
 
-	fclose (fp);
+	fclose(fp);
 
 	return clock_speed;
 }
 
-int main (int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 	printf("CPU clock speed: %4.0f MHz\n", get_cpu_clock_speed());
 	return 0;
