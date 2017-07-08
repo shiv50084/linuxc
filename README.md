@@ -337,3 +337,7 @@ open,read,write,close等系统函数称为无缓冲I/O(Unbuffered I/O)函数
 ## 红黑树
 
 [rbtree](./rbtree)
+
+## Linux进程调度
+
+[参考:深入Linux内核架构](./schedule)
