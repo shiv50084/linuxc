@@ -31,3 +31,16 @@
 |server中的listen_fd|0.0.0.0:8000|0.0.0.0:\*|LISTEN|
 |server中的connect_fd|192.168.1.224:8000|192.168.1.100:59525|ESTABLISHED|
 |client中的sock_fd|192.168.1.100:59525|192.168.1.224:8000|ESTABLISHED|
+
+# 错误处理和读写控制
+
+- 为使错误处理的代码不影响主程序的可读性,把和socket相关的一些系统函数加上错误处理代码包装成新函数,做成一个模块wrap.c
+- 慢系统调用accept,read,write被信号中断时应该重试
+- connect虽然也会阻塞,但是被信号中断时不能立刻重试
+- 对于accept如果errno是ECONNABORTED也应该重试
+- TCP协议是面向流的,read和write调用的返回值往往小于参数指定的字节数
+
+## read和write
+
+- 对于read调用:如果接收缓冲区中有20字节,请求读100字节,就会返回20
+- 对于write调用:如果请求写100字节,而发送缓冲区中只有20个字节的空闲位置,那么write会阻塞,直到把100个字节全部交给发送缓冲区才返回,但如果socket文件描述符有O_NONBLOCK标志,则write不阻塞,直接返回20
