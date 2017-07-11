@@ -4,7 +4,7 @@ LINK.c=$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 CFLAGS= -Wall -DUSE_RW
 
 PROGS =	server_wrap client_wrap server_ver1 client_ver1 \
-	client_inter server_inter
+	client_inter server_inter udp_server udp_client
 
 all: $(PROGS)
 
@@ -25,6 +25,12 @@ client_inter:	tcp_client_interactive.o wrap.o
 
 server_inter:	tcp_server_interactive.o wrap.o
 		$(CC) $(CFLAGS) -o $@ $^
+
+udp_server:	udp_server.o wrap.o
+		$(CC) -o $@ $^
+
+udp_client:	udp_client.o wrap.o
+		$(CC) -o $@ $^
 
 clean:
 	rm -f $(PROGS) *.o
