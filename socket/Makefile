@@ -1,9 +1,10 @@
 CC=gcc
 COMPILE.c=$(CC) $(CFLAGS) $(CPPFLAGS) -c
 LINK.c=$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
-CFLAGS=-DLINUX -ansi -I$(PWD)/include -Wall -D_GNU_SOURCE $(EXTRA)
+CFLAGS= -Wall -DUSE_RW
 
-PROGS =	server_wrap client_wrap server_ver1 client_ver1
+PROGS =	server_wrap client_wrap server_ver1 client_ver1 \
+	client_inter server_inter
 
 all: $(PROGS)
 
@@ -14,10 +15,16 @@ client_ver1:	tcp_client.o
 		$(CC) $(CFLAGS) -o $@ $^
 
 server_wrap:	tcp_server_wrap.o wrap.o
-		$(CC) $(CFLAGS) -DUSE_RW -o $@ $^
+		$(CC) $(CFLAGS) -o $@ $^
 
 client_wrap:	tcp_client_wrap.o wrap.o
-		$(CC) $(CFLAGS) -DUSE_RW -o $@ $^
+		$(CC) $(CFLAGS) -o $@ $^
+
+client_inter:	tcp_client_interactive.o wrap.o
+		$(CC) $(CFLAGS) -o $@ $^
+
+server_inter:	tcp_server_interactive.o wrap.o
+		$(CC) $(CFLAGS) -o $@ $^
 
 clean:
 	rm -f $(PROGS) *.o
