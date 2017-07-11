@@ -39,11 +39,24 @@ int main(int argc, char *argv[])
 	/* connect server */
 	connect(sock_fd, (struct sockaddr *)&dest_addr, sizeof(dest_addr));
 
+#ifdef USE_RW
 	/* send request to server */
 	bytes = write(sock_fd, str, strlen(str));
 
 	/* recv the answer from server */
 	bytes = read(sock_fd, buf, MAXLINE);
+#else
+	/* send request to server */
+	bytes = sendto(sock_fd, str, strlen(str), 0, (struct sockaddr*)&dest_addr, sizeof(dest_addr));
+
+	/* recv the answer from server */
+	struct sockaddr_in recv_addr;
+	socklen_t addrlen = sizeof(recv_addr);
+	bzero(&recv_addr, sizeof(recv_addr));
+
+	bytes = recvfrom(sock_fd, buf, MAXLINE, 0, (struct sockaddr*)&recv_addr, &addrlen);
+#endif
+	buf[bytes] = '\0';
 	printf("Response from serve %s\n", buf);
 
 	close(sock_fd);
