@@ -2,6 +2,8 @@
 
 [Linux高级编程](./apue/README.md)
 
+[ELF文件格式](./elf/README.md)
+
 [虚拟内存管理起到什么作用](./misc/mmu.md)
 
 [getopt函数的使用](./misc/getopt.md)
