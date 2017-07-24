@@ -31,15 +31,15 @@ void *start_routine(void *argv)
 	int ret;
 	const char *msg = "Child thread";
 	char buf[READ_BUF_SIZE];
-	
+
 	while (1)
 	{
 		ret = send(fd, msg, strlen(msg), MSG_WAITALL);
-		
+
 		ret = recv(fd, buf, READ_BUF_SIZE, MSG_WAITALL);
 		buf[ret] = '\0';
 		printf("%s[%d]\n", buf, cnt++);
-		
+
 		sleep(2);
 	}
 }

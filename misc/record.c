@@ -4,6 +4,9 @@
 #include <unistd.h>
 #include <time.h>
 #include <string.h>
+#include <stdlib.h>
+
+#define DEBUG_PRINT
 
 #ifdef DEBUG_PRINT
 #define DBG_PRINT	printf

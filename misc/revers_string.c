@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define DBG_PRINT
+
 #ifdef DBG_PRINT
 #define dbg_print	printf
 #else

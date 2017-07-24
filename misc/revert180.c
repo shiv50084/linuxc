@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #define X_PIXEL	3
-#define Y_PIXEL 6 
+#define Y_PIXEL 6
 
 void rever180(int dst[X_PIXEL][Y_PIXEL], int src[X_PIXEL][Y_PIXEL], int col, int row)
 {
@@ -12,7 +12,7 @@ void rever180(int dst[X_PIXEL][Y_PIXEL], int src[X_PIXEL][Y_PIXEL], int col, int
 			dst[col - i - 1][row - j - 1] = src[i][j];
 		}
 	}
-	
+
 }
 
 int main(int argc, char *argv[])

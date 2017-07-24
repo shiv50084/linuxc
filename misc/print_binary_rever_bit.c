@@ -4,6 +4,8 @@
  */
 #include <stdio.h>
 
+#define DEBUG_PRINT
+
 #ifdef DEBUG_PRINT
 #define DBG_PRINT	printf
 #else
@@ -61,7 +63,10 @@ int main(int argc, char **argv)
 
 		printf("input the rever bit[0-31]:");
 		scanf("%d", &bit);
+
+		/* rever bit key code */
 		input = input ^ (1 << bit);
+
 		print_binary(input, result);
 		printf("input number rever bit binary:");
 		wrap_result(result);

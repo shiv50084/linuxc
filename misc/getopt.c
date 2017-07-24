@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 			printf("optarg[%d] = %c\t", i, optarg[i]);
 
 		printf("\noptind = %d\n", optind);
-		printf("argv[%d]\n", optind, argv[optind]);
+		printf("argv[%d]\n", argv[optind]);
 	}
 
 	return 0;

@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 
 	/* result must be 60503 */
 	printf("%x\n", *(int*)pt);
+	printf("sizeof(node) = %d\n", sizeof(struct node));
 
 	return 0;
 }

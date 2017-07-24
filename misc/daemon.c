@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 /*
  * 创建一个daemon的核心
@@ -13,7 +14,7 @@ void daemonize(void)
 	/*
 	 * Became a session leader to lose controlling TTY
 	 */
-	if (pid = fork() < 0)
+	if ( (pid = fork()) < 0)
 	{
 		perror("fork");
 		exit(1);

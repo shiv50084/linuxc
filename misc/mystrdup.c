@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define POINT_TO_STRING
 #ifdef POINT_TO_STRING
 #define PATH_MAX 1024
 void * mymalloc(size_t nbytes)

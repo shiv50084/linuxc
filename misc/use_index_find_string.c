@@ -9,7 +9,7 @@
 
 const char *use_index_find_string(int index)
 {
-	switch (index)	
+	switch (index)
 	{
 		NAME(EMINEM);
 		NAME(JORDAN);
