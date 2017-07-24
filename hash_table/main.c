@@ -1,6 +1,10 @@
 #include "hash.h"
 #include <stdio.h>
 
+/*
+ * 根据给定的hash_function
+ * 下面的数据中2和22将会放到同一个slot中
+ */
 PI playerInfo[] = {
 	{1, "jordan"},
 	{2, "kobe"},
@@ -21,7 +25,7 @@ int main(int argc, char *argv[])
 	HASH_TABLE HashTable;
 
 	/* 初始化哈希表里的每个槽位对应的链表头为空 */
-	for (i = 0; i < sizeof(playerInfo) / sizeof(playerInfo[0]); i++)
+	for (i = 0; i < SLOTS; i++)
 		HashTable.value[i] = NULL;
 
 	/* 把数据插入哈希表 */
@@ -31,7 +35,9 @@ int main(int argc, char *argv[])
 		insert_data_into_hash(&HashTable, tmpNode);
 	}
 
-	printf("input a number[0-9]:");
+	show_hash_table(&HashTable);
+
+	printf("input a slot number[0-9]:");
 	scanf("%d", &input);
 	if (input > 9 || input < 0)
 	{

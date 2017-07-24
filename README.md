@@ -16,6 +16,8 @@
 
 [红黑树R-B Tree](./rbtree)
 
+[哈希表HashTable](./hash_table)
+
 [Linux进程调度](./schedule)
 
 [系统调用I/O](./misc/system_io.md)

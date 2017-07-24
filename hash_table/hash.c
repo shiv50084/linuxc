@@ -1,6 +1,7 @@
 #include "hash.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 /*
  * 哈希函数(数据存放的依据)
@@ -61,4 +62,27 @@ LIST_HEAD* find_slot_list_head(HASH_TABLE* pHashTbl, int number)
 	slot = hash_function(number);
 
 	return pHashTbl->value[slot];
+}
+
+void show_hash_table(HASH_TABLE* pHashTbl)
+{
+	int i;
+	NODE *tmpSlot;
+
+	/* 遍历所有的槽位 */
+	for (i = 0; i < SLOTS; i++)
+	{
+		/* 给定的数据并没有填充所有的slot */
+		if (!pHashTbl->value[i])
+			continue;
+
+		tmpSlot = pHashTbl->value[i];
+		printf("Slot[%d] : ", i);
+		while (tmpSlot)
+		{
+			printf("%s\t", (tmpSlot->pi).name);
+			tmpSlot = tmpSlot->next;
+		}
+		printf("\n");
+	}
 }
