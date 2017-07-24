@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 		push(p);
 	}
 
-	while (p = pop())
+	while ( (p = pop()) )
 	{
 		print_item(p);
 		free_node(p);

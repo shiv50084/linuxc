@@ -15,6 +15,7 @@ void traverse(void (*visit)(struct node*));
 void destroy(void);
 void push(struct node *p);
 struct node* pop(void);
+void insert(struct node* p);
 
 #endif
 
