@@ -7,8 +7,8 @@ static struct node *head = NULL;
 struct node* make_node(unsigned char item)
 {
 	struct node *p = NULL;
-	
-	p = malloc(sizeof(struct node));		
+
+	p = malloc(sizeof(struct node));
 	p->item = item;
 	p->next = NULL;
 
@@ -39,10 +39,11 @@ void insert(struct node* p)
 	head = p;
 }
 
-/* 
+/*
  * delete 的优化版本
  * 不需要对是否是删除头部特殊判断
  * 这里巧用了二级指针操作
+ * 一个指向当前节点的二级指针就是其上一节点
  */
 void delete(struct node *p)
 {
@@ -74,8 +75,8 @@ void traverse(void (*visit) (struct node*))
 
 void destroy(void)
 {
-	struct node *p = head;	
-	struct node *q;	
+	struct node *p = head;
+	struct node *q;
 
 	head = NULL;
 

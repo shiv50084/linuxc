@@ -8,34 +8,42 @@ void print_item(struct node *p)
 
 int main(int argc, char **argv)
 {
-	struct node *p = make_node(10);
-	insert(p);
+	struct node *p;
+	int i;
+	int raw_data[] = {10, 5, 90};
+	int raw_data2[] = {100, 200, 250};
 
-	p = make_node(5);
-	insert(p);
-
-	p = make_node(90);
-	insert(p);
+	/* make node and insert to list */
+	for (i = 0; i < sizeof(raw_data) / sizeof(raw_data[0]); i++)
+	{
+		p = make_node(raw_data[i]);
+		printf("Insert %d to list head\n", raw_data[i]);
+		insert(p);
+	}
 
 	/* print list */
+	printf("List: ");
 	traverse(print_item);
 	printf("\n");
 
 	/* delete one */
+	printf("Delete %d\n", 90);
 	p = search(90);
 	delete(p);
 	free_node(p);
 
+	/* print list */
+	printf("List: ");
 	traverse(print_item);
 	printf("\n");
 	destroy();
 
-	p = make_node(100);
-	push(p);
-	p = make_node(200);
-	push(p);
-	p = make_node(250);
-	push(p);
+	/* make node and insert to list */
+	for (i = 0; i < sizeof(raw_data2) / sizeof(raw_data2[0]); i++)
+	{
+		p = make_node(raw_data2[i]);
+		push(p);
+	}
 
 	while (p = pop())
 	{
