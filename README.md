@@ -42,4 +42,4 @@
 
 [内核如何实现信号的捕捉](./misc/signal_capture.md)
 
-[Mutex(线程间同步)](./misc/mutex.md)
+[线程间同步,防止死锁原则](./misc/thread_sync.md)

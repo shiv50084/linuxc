@@ -8,9 +8,12 @@ PROGS =	byteio cmd_action containerof cpmem daemon envi \
 	inotify inotifyep jmp localva strdup parr pbrb \
 	recd recdr recdw recu reverstr revert180 scan_cal \
 	bigend socketp stack stdouterr structnop swapno \
-	threadsync ttyname tdas idx2str
+	threadsync ttyname tdas idx2str pc
 
 all:	$(PROGS)
+
+pc:	pc.o
+		$(CC) $(CFLAGS) -lpthread -o $@ $^
 
 idx2str:	use_index_find_string.o
 		$(CC) $(CFLAGS) -o $@ $^
