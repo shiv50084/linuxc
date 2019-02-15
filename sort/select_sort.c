@@ -5,25 +5,25 @@
 
 #define ELEMENT_NR 20
 
-void shell_sort(int array[], int len)
+/*
+ * 每一次从待排序的数组中选取最小(或最大)的数
+ * 依次存放到已排序的数组中
+ */
+void select_sort(int array[], int len)
 {
-	int i, j, gap;
+	int i, j;
+	int min_index;
 
-	/*
-	 * 以数组长度的一半为初始gap划分区间
-	 * 不断递减步进gap = gap / 2
-	 */
-	for (gap = len / 2; gap > 0; gap = gap / 2)
+	for (i = 0; i < len; i++)
 	{
-		/* 遍历每个区间的数 */
-		for (i = gap; i < len; i++)
+		min_index = i;
+		for (j = i + 1; j < len; j++)
 		{
-			/* 对每个区间的数进行直接插入排序 */
-			for (j = i - gap; j >= 0 && array[j] > array[j + gap]; j = j - gap)
-			{
-				swap(&array[j], &array[j + gap]);
-			}
+			if (array[min_index] > array[j])
+				min_index = j;
 		}
+
+		swap(&array[min_index], &array[i]);
 	}
 }
 
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
 	show_array(array, ELEMENT_NR);
 	start = clock();
-	shell_sort(array, ELEMENT_NR);
+	select_sort(array, ELEMENT_NR);
 	end = clock();
 	time_spend = (double)(end - start) / CLOCKS_PER_SEC;
 	show_array(array, ELEMENT_NR);

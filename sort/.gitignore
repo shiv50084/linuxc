@@ -2,3 +2,5 @@ bubbleSort
 insertSort
 shellSort
 quickSort
+bucketSort
+selectSort

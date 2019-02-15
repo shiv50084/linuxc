@@ -1,13 +1,7 @@
-/*
- * Usage: gcc -DDEBUG inset_sort.c
- */
-
-#include <stdio.h>
+#include "insert_sort.h"
 #include "common.h"
 
 #define DEBUG
-int arr[] = {53, 27, 36, 15, 69, 42};
-
 void insert_sort(int arr[], int len)
 {
 	int i, j, key;
@@ -23,9 +17,9 @@ void insert_sort(int arr[], int len)
 #endif
 
 		/*
-		* 从最开始取数和子序列比较(i = j - 1)
-		* 如果满足条件,进行交换
-		*/
+		 * 从最开始取数和子序列比较(i = j - 1)
+		 * 如果满足条件,进行交换
+		 */
 		for (i = j - 1; i >= 0 && arr[i] > key; i--)
 			arr[i + 1] = arr[i];
 
@@ -34,14 +28,4 @@ void insert_sort(int arr[], int len)
 		insert_sort_show_array(arr, len, j + 1);
 #endif
 	}
-}
-
-int main(int argc, char **argv)
-{
-	int len;
-
-	len = ARRAY_LEN(arr);
-	insert_sort(arr, len);
-
-	return 0;
 }
