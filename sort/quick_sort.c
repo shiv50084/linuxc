@@ -1,17 +1,7 @@
 #include <stdio.h>
-
-#define ARRAY_LEN(x) (sizeof(x)/sizeof((x)[0]))
+#include "common.h"
 
 typedef int ElementType;
-
-void swap(int *a, int *b)
-{
-	int tmp;
-
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
-}
 
 /*
  * Return medianof left, center, right
@@ -87,20 +77,10 @@ void quick_sort(ElementType array[], int left, int right)
 	}
 }
 
-void show_array(ElementType array[], int len)
-{
-	int i;
-
-	for (i = 0; i < len; i++)
-		printf("%d ", array[i]);
-	printf("\n");
-}
-
 int main(int argc, char *argv[])
 {
 	int len;
 	ElementType A[] = {3, 12, 32, 1, 2, 33, 78, 21};
-
 
 	len = ARRAY_LEN(A);
 	show_array(A, len);

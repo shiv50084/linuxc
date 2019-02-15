@@ -1,14 +1,20 @@
 CC=gcc
 CFLAGS= -Wall -ftest-coverage -fprofile-arcs
 
-PROGS =	bubbleSort qsort
+PROGS =	bubbleSort quickSort insertSort shellSort
 
 all:	$(PROGS)
 
-bubbleSort: bubble_sort.o
+insertSort: insert_sort.o common.o
 		$(CC) $(CFLAGS) -o $@ $^
 
-qsort: quick_sort.o
+shellSort: shell_sort.o common.o
+		$(CC) $(CFLAGS) -o $@ $^
+
+bubbleSort: bubble_sort.o common.o
+		$(CC) $(CFLAGS) -o $@ $^
+
+quickSort: quick_sort.o common.o
 		$(CC) $(CFLAGS) -o $@ $^
 
 clean:

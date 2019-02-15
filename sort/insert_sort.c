@@ -3,33 +3,10 @@
  */
 
 #include <stdio.h>
+#include "common.h"
 
+#define DEBUG
 int arr[] = {53, 27, 36, 15, 69, 42};
-
-void show_array(int array[], int len, int key_index)
-{
-	int i;
-
-	if (0 != key_index)
-		printf("[");
-
-	for (i = 0; i < len; i++)
-	{
-		if (i == key_index && key_index > 0)
-		{
-			printf("(%d)\t", array[i]);
-			continue;
-		}
-		if (i == key_index - 1)
-		{
-			printf("%d]\t", array[i]);
-			continue;
-		}
-		else
-			printf("%d\t", array[i]);
-	}
-	printf("\n");
-}
 
 void insert_sort(int arr[], int len)
 {
@@ -42,7 +19,7 @@ void insert_sort(int arr[], int len)
 		key = arr[j];
 #ifdef DEBUG
 		if (j == 1)
-			show_array(arr, len, j);
+			insert_sort_show_array(arr, len, j);
 #endif
 
 		/*
@@ -54,14 +31,17 @@ void insert_sort(int arr[], int len)
 
 		arr[i + 1] = key;
 #ifdef DEBUG
-		show_array(arr, len, j + 1);
+		insert_sort_show_array(arr, len, j + 1);
 #endif
 	}
 }
 
 int main(int argc, char **argv)
 {
-	int len = sizeof(arr) / sizeof(arr[0]);
+	int len;
+
+	len = ARRAY_LEN(arr);
 	insert_sort(arr, len);
+
 	return 0;
 }
