@@ -8,7 +8,7 @@ STRIP=strip
 
 PROGS =	gout1 gout2 gout3 gout4 gout5 gout6 \
 		gout7 gout8 gout9 gouta goutb goutc \
-		goutd goute
+		goutd goute goutf
 
 all:	$(PROGS)
 
@@ -62,6 +62,9 @@ goutd: hello.o
 	$(STRIP) $@
 
 goute: struct_display.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+goutf: call_function.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 clean:
