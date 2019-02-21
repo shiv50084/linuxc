@@ -2,9 +2,12 @@ CC=gcc
 CFLAGS= -Wall -ftest-coverage -fprofile-arcs
 
 PROGS =	bubbleSort quickSort insertSort shellSort\
-		selectSort bucketSort
+		selectSort bucketSort heapSort
 
 all:	$(PROGS)
+
+heapSort: heap_sort.o common.o
+		$(CC) $(CFLAGS) -o $@ $^
 
 bucketSort: bucket_sort.o insert_sort.o common.o
 		$(CC) $(CFLAGS) -o $@ $^

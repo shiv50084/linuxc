@@ -22,3 +22,9 @@
 
 	gcov [-b] bubble_sort.c
 	bubble_sort.c.gcov
+
+## Heap Sort
+
+[Heapsort 堆排序算法详解](https://www.cnblogs.com/jetpie/p/3971382.html)
+
+[算法导论学习 heapsort](https://www.cnblogs.com/fu11211129/p/4201964.html)

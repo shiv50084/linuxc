@@ -4,3 +4,4 @@ shellSort
 quickSort
 bucketSort
 selectSort
+heapSort
