@@ -26,6 +26,7 @@ struct keycode_name {
 
 /* key map ain't covery all */
 struct keycode_name keys[104] = {
+	/* ascii, keycode, name */
 	{0, 1,    	"ESC"},
 	{0, 59,   	"F1"},
 	{0, 60,   	"F2"},
@@ -89,7 +90,7 @@ struct keycode_name keys[104] = {
 	{78, 49,   	"n N"},
 	{77, 50,   	"m M"},
 	{0, 51,   	", <"},
-	{0, 52,   	". >"},
+	{46, 52,   	". >"},
 	{47, 53,   	"/ ?"},
 	{0, 54,   	"Right_shift(右上档键)"},
 	{0, 29,   	"Left_ctrl(左Ctrl键)"},
