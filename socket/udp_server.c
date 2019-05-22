@@ -3,11 +3,11 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 #include "wrap.h"
 
 #define MAXLINE 80
-#define SERVER_PORT 8000
 
 void do_something_for_client(char *buf, int bytes)
 {
@@ -22,6 +22,10 @@ void do_something_for_client(char *buf, int bytes)
 	fflush(stdout);
 }
 
+/*
+ * Usage :
+ * ./udp_server <port>
+ */
 int main(int argc, char *argv[])
 {
 	struct sockaddr_in server_addr, client_addr;
@@ -30,6 +34,12 @@ int main(int argc, char *argv[])
 	char str[INET_ADDRSTRLEN];
 	int bytes;
 	int sock_fd;
+
+	if (argc != 2)
+	{
+		fprintf(stderr, "%s <port>\n", argv[0]);
+		exit(1);
+	}
 
 	/*
 	 * AF_INET for IPv4
@@ -41,7 +51,7 @@ int main(int argc, char *argv[])
 	bzero(&server_addr, sizeof(server_addr));
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-	server_addr.sin_port = htons(SERVER_PORT);
+	server_addr.sin_port = htons(atoi(argv[1]));
 
 	/* bind fd and address (fixed address) */
 	Bind(sock_fd, (struct sockaddr *)&server_addr, sizeof(server_addr));

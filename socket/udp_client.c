@@ -9,7 +9,6 @@
 #include "wrap.h"
 
 #define MAXLINE 80
-#define SERVER_PORT 8000
 
 int main(int argc, char *argv[])
 {
@@ -19,9 +18,9 @@ int main(int argc, char *argv[])
 	int bytes;
 	char *target_ip;
 
-	if (argc != 2)
+	if (argc != 3)
 	{
-		printf("Usage : %s <target ip>\n", argv[0]);
+		printf("Usage : %s <target ip> <port>\n", argv[0]);
 		exit(1);
 	}
 
@@ -32,7 +31,7 @@ int main(int argc, char *argv[])
 	/* destination address */
 	bzero(&dest_addr, sizeof(dest_addr));
 	dest_addr.sin_family = AF_INET;
-	dest_addr.sin_port = htons(SERVER_PORT);
+	dest_addr.sin_port = htons(atoi(argv[2]));
 	inet_pton(AF_INET, target_ip, &dest_addr.sin_addr);
 
 	while (fgets(buf, MAXLINE, stdin) != NULL)
