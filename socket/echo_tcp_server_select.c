@@ -9,7 +9,6 @@
 #include <time.h>
 #include <errno.h>
 #include <pthread.h>
-#include <fcntl.h>
 #include <arpa/inet.h>
 
 #include "vector_fd.h"
@@ -66,14 +65,15 @@ void do_service(int fd)
 	DPRINT("read fd[%d]size = %d\n", fd, size);
 	if (size == 0) /* 客户端断开连接 */
 	{
-		char info[] = "Client closed";
-		write(STDOUT_FILENO, info, sizeof(info));
+		printf("Client closed\n");
+		/* write(STDOUT_FILENO, info, sizeof(info)); */
 		remove_fd(vfd, fd);
 		close(fd);
 	}
 	else if (size > 0)
 	{
-		write(STDOUT_FILENO, buff, sizeof(buff));
+		printf("%s\n", buff);
+		/* write(STDOUT_FILENO, buff, sizeof(buff)); */
 		if (write(fd, buff, size) < 0)
 		{
 			if (errno == EPIPE) /* client close the connect */
@@ -86,21 +86,74 @@ void do_service(int fd)
 	}
 }
 
-void *routine(void *arg)
+/*
+ * travel the vfd
+ * add fd into set
+ * return the maxfd
+ */
+int add_set(fd_set *set)
 {
 	int i;
+	int maxfd;
+	int fd;
 
-	while (1)
+	FD_ZERO(set);
+
+	/* assume the first one is max */
+	maxfd = vfd->fd[0];
+
+	for (i = 0; i < vfd->counter; i++)
 	{
-#ifdef DEBUG_INFO
-		/* do a sleep for debug info */
-		sleep(1);
-#else
-#endif
-		for (i = 0; i < vfd->counter; i++)
+		fd = get_fd(vfd, i);
+		if (fd > maxfd)
+			maxfd = fd;
+
+		/* add fd into set */
+		FD_SET(fd, set);
+	}
+
+	return maxfd;
+}
+
+void *routine(void *arg)
+{
+	struct timeval t;
+	int nr;
+	int maxfd;
+	fd_set rset;
+	int i;
+	int fd;
+
+	/* setup timeout */
+	t.tv_sec = 2;
+	t.tv_usec = 0;
+
+	/* construction the fd set */
+	maxfd = add_set(&rset);
+
+	while ((nr = select(maxfd+1, &rset, NULL, NULL, &t)) >= 0)
+	{
+		/* we got available fd */
+		if (nr > 0)
 		{
-			do_service(get_fd(vfd, i));
+			for (i = 0; i < vfd->counter; i++)
+			{
+				fd = get_fd(vfd, i);
+				/* kernel will set fd in nonblock mode */
+				if (FD_ISSET(fd, &rset))
+					do_service(fd);
+			}
 		}
+
+		/* TIMEOUT : let's resetup something */
+		DPRINT("Timeout...\n");
+
+		/* 1. resetup the timeout */
+		t.tv_sec = 2;
+		t.tv_usec = 0;
+
+		/* 2. reconstruction the fd set */
+		maxfd = add_set(&rset);
 	}
 
 	return (void *)0;
@@ -109,7 +162,6 @@ void *routine(void *arg)
 int main(int argc, char *argv[])
 {
 	/* each client connect fd and flags */
-	int flags;
 	int fd;
 
 	/* pthread variables */
@@ -187,10 +239,6 @@ int main(int argc, char *argv[])
 			exit(1);
 		}
 		printout_info(&cli_addr);
-
-		/* set none block IO mode */
-		flags = fcntl(fd, F_GETFL, 0);
-		fcntl(fd, F_SETFL, O_NONBLOCK | flags);
 
 		/* add each client fd into vfd */
 		add_fd(vfd, fd);
