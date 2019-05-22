@@ -50,3 +50,12 @@
 # UDP 编程的C/S架构
 
 ![udp_cs](./udp_cs.png)
+
+# IO multiplxing example
+
+[client.c](./echo_tcp_client_fcntl.c)
+
+[server.c](./echo_tcp_server_fcntl.c)
+
+run "fcntl_server 8888" in one console
+run multiple client "fcntl_client 127.0.0.1 8888" in each console

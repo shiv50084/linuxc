@@ -5,9 +5,17 @@ CFLAGS= -Wall -DUSE_RW
 
 PROGS =	tcp_server_wrap tcp_client_wrap tcp_server tcp_client \
 	tcp_client_inter tcp_server_inter udp_server udp_client \
-	getinfo_svr getinfo_cli
+	getinfo_svr getinfo_cli fcntl_server fcntl_client
 
 all: $(PROGS)
+
+# tcp io multiplexing example
+fcntl_server : echo_tcp_server_fcntl.o vector_fd.o
+		$(CC) $(CFLAGS) -o $@ $^ -lpthread
+
+fcntl_client : echo_tcp_client_fcntl.o
+		$(CC) $(CFLAGS) -o $@ $^
+# tcp io multiplexing example
 
 getinfo_svr: getaddrinfo_server.o
 		$(CC) -o $@ $^

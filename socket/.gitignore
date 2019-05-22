@@ -8,3 +8,5 @@ udp_server
 udp_client
 getinfo_cli
 getinfo_svr
+fcntl_client
+fcntl_server
