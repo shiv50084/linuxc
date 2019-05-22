@@ -11,9 +11,15 @@ PROGS =	byteio cmd_action containerof cpmem daemon envi \
 	threadsync ttyname tdas idx2str pc spa epl inotify_example \
 	dnotify_test percent_star_d toggle_value mmap_test1 mmap_test2 \
 	mmap_test3w mmap_test3r fsk_demo incomptest selfident \
-	prot_fun glob_example print_color
+	prot_fun glob_example print_color ghbn ghent
 
 all:	$(PROGS)
+
+ghbn : get_hostbyname.o
+		$(CC) $(CFLAGS) -o $@ $^
+
+ghent : get_hostent.o
+		$(CC) $(CFLAGS) -o $@ $^
 
 print_color : ansi_color.o
 		$(CC) $(CFLAGS) -o $@ $^
