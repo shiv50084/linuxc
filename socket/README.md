@@ -57,5 +57,18 @@
 
 [server.c](./echo_tcp_server_fcntl.c)
 
-run "fcntl_server 8888" in one console
-run multiple client "fcntl_client 127.0.0.1 8888" in each console
+## Usage
+
+run server(fcntl)
+
+	./io_fcntl_server 8888
+
+or run server(select)
+
+	./io_select_server 8888
+
+run multiple client(or using netcat application)
+
+	./io_client 127.0.0.1 8888
+	./io_client 127.0.0.1 8888
+	nc 127.0.0.1 8888
