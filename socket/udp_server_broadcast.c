@@ -4,27 +4,26 @@
 #include <arpa/inet.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <signal.h>
 
 #include "wrap.h"
 
 #define MAXLINE 80
+int sock_fd;
 
-void do_something_for_client(char *buf, int bytes)
+void sig_handler(int signo)
 {
-	int i;
-	for (i = 0; i < bytes; i++)
+	if (signo == SIGINT)
 	{
-#ifdef DEBUG
-		printf("%c\t", buf[i]);
-#endif
-		buf[i] = toupper(buf[i]);
+		printf("Got signo %d\n", signo);
+		Close(sock_fd);
+		exit(1);
 	}
-	fflush(stdout);
 }
 
 /*
  * Usage :
- * ./udp_server <port>
+ * ./udp_server_broadcast <port>
  */
 int main(int argc, char *argv[])
 {
@@ -33,12 +32,17 @@ int main(int argc, char *argv[])
 	char buf[MAXLINE];
 	char str[INET_ADDRSTRLEN];
 	int bytes;
-	int sock_fd;
-	int optval = 1;
 
 	if (argc != 2)
 	{
 		fprintf(stderr, "%s <port>\n", argv[0]);
+		exit(1);
+	}
+
+	/* register sigint handler */
+	if (signal(SIGINT, sig_handler) == SIG_ERR)
+	{
+		perror("signal register error");
 		exit(1);
 	}
 
@@ -48,13 +52,6 @@ int main(int argc, char *argv[])
 	 * protocol : 0
 	 */
 	sock_fd = Socket(AF_INET, SOCK_DGRAM, 0);
-
-	/* set reuse address option */
-	if (setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) < 0)
-	{
-		perror("setsockoption error");
-		return -1;
-	}
 
 	bzero(&server_addr, sizeof(server_addr));
 	server_addr.sin_family = AF_INET;
@@ -72,15 +69,10 @@ int main(int argc, char *argv[])
 		bytes = recvfrom(sock_fd, buf, MAXLINE, 0, (struct sockaddr*)&client_addr, &client_addr_len);
 		if (bytes == -1)
 			perror("recvform error");
-		printf("recv %d bytes from %s at port %d\n", bytes, inet_ntop(AF_INET, &client_addr.sin_addr, str, sizeof(str)), ntohs(client_addr.sin_port));
 
-		/* do something for client */
-		do_something_for_client(buf, bytes);
-
-		/* answer client request */
-		bytes = sendto(sock_fd, buf, bytes, 0, (struct sockaddr*)&client_addr, sizeof(client_addr));
-		if (bytes == -1)
-			perror("Send to error");
+		/* print out some info of sender */
+		buf[bytes-1] = '\0';
+		printf("recv %s(%d) bytes from %s at port %d\n", buf, bytes-1, inet_ntop(AF_INET, &client_addr.sin_addr, str, sizeof(str)), ntohs(client_addr.sin_port));
 	}
 
 	return 0;
