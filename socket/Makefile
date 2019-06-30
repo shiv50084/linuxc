@@ -6,7 +6,7 @@ CFLAGS= -Wall -DUSE_RW
 PROGS =	tcp_server_wrap tcp_client_wrap tcp_server tcp_client \
 	tcp_client_inter tcp_server_inter udp_server udp_client \
 	getinfo_svr getinfo_cli io_fcntl_server io_client io_select_server \
-	udp_server_broadcast udp_client_broadcast
+	udp_server_broadcast udp_client_broadcast tcp_server_msg tcp_client_msg
 
 all: $(PROGS)
 
@@ -26,6 +26,12 @@ getinfo_svr: getaddrinfo_server.o
 
 getinfo_cli: getaddrinfo_client.o
 		$(CC) -o $@ $^
+
+tcp_server_msg:	tcp_server_msg.o msg.o
+		$(CC) $(CFLAGS) -o $@ $^
+
+tcp_client_msg:	tcp_client_msg.o msg.o
+		$(CC) $(CFLAGS) -o $@ $^
 
 tcp_server:	tcp_server.o
 		$(CC) $(CFLAGS) -o $@ $^

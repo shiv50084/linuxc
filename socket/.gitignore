@@ -13,3 +13,5 @@ io_fcntl_server
 io_select_server
 udp_server_broadcast
 udp_client_broadcast
+tcp_client_msg
+tcp_server_msg
