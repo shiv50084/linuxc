@@ -1,0 +1,27 @@
+#ifndef __ACCOUNT_H__
+#define __ACCOUNT_H__
+#include <pthread.h>
+
+typedef struct
+{
+	int code; /* 账户号 */
+	double balance; /* 余额 */
+
+	/* 用来对共享资源保护 */
+
+	/*
+	 * 建议互斥锁用来锁定一个账户(共享资源)
+	 * 和账户绑定在一起
+	 * 尽量不要设置成全局变量,否则可能出现一把锁
+	 * 去锁定多个用户导致并发性能降低
+	 */
+	pthread_mutex_t mutex;
+}Account;
+
+extern Account *create_account(int code, double balance);
+extern void destroy_account(Account *a);
+extern double withdraw(Account *a, double amt);
+extern double deposit(Account *a, double amt);
+extern double get_balance(Account *a);
+
+#endif
