@@ -4,7 +4,8 @@ LINK.c=$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 CFLAGS= -Wall -lpthread
 
 PROGS = accountest detach ignore_sig sig2main\
-		pj1 pj2 race locktype rwlock_feature conditionvar
+		pj1 pj2 race locktype rwlock_feature \
+		conditionvar conditionvar2
 
 all:	$(PROGS)
 
@@ -36,6 +37,9 @@ rwlock_feature:	rwlock_feature.o
 		$(CC) $(CFLAGS) -o $@ $^
 
 conditionvar:	condition.o
+		$(CC) $(CFLAGS) -o $@ $^
+
+conditionvar2:	condition2.o
 		$(CC) $(CFLAGS) -o $@ $^
 
 clean:

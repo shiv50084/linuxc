@@ -3,11 +3,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-/* 一个线程负责计算结果, 一个线程负责获取结果 */
+/* 一个线程负责计算结果, 多个线程负责获取结果 */
 typedef struct
 {
 	int res; /* hold the result */
-	int ready_get_result; /* user define condition */
+	int counter; /* number user of the result receiver */
 
 	pthread_mutex_t mutex;
 	pthread_cond_t cond;
@@ -25,7 +25,7 @@ void *calc_routine(void *argc)
 
 	/* is get routine ready for the result? */
 	pthread_mutex_lock(&r->mutex);
-	while (!r->ready_get_result) /* 判断接收线程是否已经就绪 */
+	while (r->counter < 2) /* 判断至少有2个接收线程已经就绪 */
 	{
 		pthread_mutex_unlock(&r->mutex);
 		usleep(100);
@@ -49,10 +49,10 @@ void *get_routine(void *argc)
 
 	/*
 	 * 对两个线程共享的判断条件进行保护(加锁)
-	 * mutex 同时保护了ready_get_result和等待队列
+	 * mutex 同时保护了counter和等待队列
 	 */
 	pthread_mutex_lock(&r->mutex); /* 和pthread_cond_wait里的第一个unlock配对 */
-	r->ready_get_result = 1;	/* ready to get the result */
+	r->counter++;	/* increase the counter */
 
 	/*
 	 * 条件变量内部执行的操作
@@ -71,7 +71,7 @@ void *get_routine(void *argc)
 
 	pthread_mutex_unlock(&r->mutex); /* 和pthread_cond_wait里的唤醒后的lock配对 */
 
-	printf("Get result %d\n", r->res);
+	printf("0x%lx get result %d\n", pthread_self(), r->res);
 
 	return (void *)0;
 }
@@ -79,14 +79,20 @@ void *get_routine(void *argc)
 int main(int argc, char *argv[])
 {
 	int err;
-	pthread_t tid_calc, tid_get;
+	pthread_t tid_calc, tid_get0, tid_get1;
 
 	Result r;
-	r.ready_get_result = 0;
+	r.counter = 0;
 	pthread_cond_init(&r.cond, NULL);
 	pthread_mutex_init(&r.mutex, NULL);
 
-	if ((err = pthread_create(&tid_get, NULL,
+	if ((err = pthread_create(&tid_get0, NULL,
+					get_routine, (void *)&r)) != 0)
+	{
+		perror("pthread create error");
+	}
+
+	if ((err = pthread_create(&tid_get1, NULL,
 					get_routine, (void *)&r)) != 0)
 	{
 		perror("pthread create error");
@@ -99,7 +105,8 @@ int main(int argc, char *argv[])
 	}
 
 	pthread_join(tid_calc, NULL);
-	pthread_join(tid_get, NULL);
+	pthread_join(tid_get0, NULL);
+	pthread_join(tid_get1, NULL);
 
 	pthread_cond_destroy(&r.cond);
 	pthread_mutex_destroy(&r.mutex);
