@@ -8,3 +8,4 @@ accountest
 ignore_sig
 locktype
 rwlock_feature
+conditionvar
