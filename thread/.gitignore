@@ -10,3 +10,4 @@ locktype
 rwlock_feature
 conditionvar
 conditionvar2
+interactive_rw

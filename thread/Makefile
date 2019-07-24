@@ -5,7 +5,7 @@ CFLAGS= -Wall -lpthread
 
 PROGS = accountest detach ignore_sig sig2main\
 		pj1 pj2 race locktype rwlock_feature \
-		conditionvar conditionvar2
+		conditionvar conditionvar2 interactive_rw
 
 all:	$(PROGS)
 
@@ -40,6 +40,9 @@ conditionvar:	condition.o
 		$(CC) $(CFLAGS) -o $@ $^
 
 conditionvar2:	condition2.o
+		$(CC) $(CFLAGS) -o $@ $^
+
+interactive_rw:	interactive_rw.o
 		$(CC) $(CFLAGS) -o $@ $^
 
 clean:
