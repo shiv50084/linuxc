@@ -12,9 +12,18 @@ Account *create_account(int code, double balance)
 	a->balance = balance;
 
 #ifdef USING_MUTEX
+	printf("Mutex implementation\n");
 	pthread_mutex_init(&a->mutex, NULL);
-#else
+#endif
+
+#ifdef USING_RWLOCK
+	printf("ReadWriteLock implementation\n");
 	pthread_rwlock_init(&a->lock, NULL);
+#endif
+
+#ifdef USING_SEM
+	printf("Semaphore implementation\n");
+	sem_init(&a->sem, 0, 1);
 #endif
 
 	printf("%d balance %f\n", a->code, a->balance);
@@ -28,8 +37,14 @@ void destroy_account(Account *a)
 
 #ifdef USING_MUTEX
 	pthread_mutex_destroy(&a->mutex);
-#else
+#endif
+
+#ifdef USING_RWLOCK
 	pthread_rwlock_destroy(&a->lock);
+#endif
+
+#ifdef USING_SEM
+	sem_destroy(&a->sem);
 #endif
 
 	free(a);
@@ -43,16 +58,35 @@ double withdraw(Account *a, double amt)
 	/* 操作临界资源就开始加锁 */
 #ifdef USING_MUTEX
 	pthread_mutex_lock(&a->mutex);
-#else
+#endif
+
+#ifdef USING_RWLOCK
 	pthread_rwlock_wrlock(&a->lock);
+#endif
+
+	/*
+	 * PV操作
+	 * P操作递减
+	 * V操作递增
+	 */
+#ifdef USING_SEM
+	/* P(1)操作 */
+	sem_wait(&a->sem);
 #endif
 
 	if (amt < 0 || amt > a->balance)
 	{
 #ifdef USING_MUTEX
 		pthread_mutex_unlock(&a->mutex);
-#else
+#endif
+
+#ifdef USING_RWLOCK
 		pthread_rwlock_unlock(&a->lock);
+#endif
+
+#ifdef USING_SEM
+		/* V(1)操作 */
+		sem_post(&a->sem);
 #endif
 		return 0.0;
 	}
@@ -65,8 +99,14 @@ double withdraw(Account *a, double amt)
 
 #ifdef USING_MUTEX
 		pthread_mutex_unlock(&a->mutex);
-#else
+#endif
+
+#ifdef USING_RWLOCK
 		pthread_rwlock_unlock(&a->lock);
+#endif
+
+#ifdef USING_SEM
+		sem_post(&a->sem);
 #endif
 
 	return amt;
@@ -81,17 +121,30 @@ double deposit(Account *a, double amt)
 	/* 操作临界资源就开始加锁 */
 #ifdef USING_MUTEX
 	pthread_mutex_lock(&a->mutex);
-#else
+#endif
+
+#ifdef USING_RWLOCK
 	pthread_rwlock_wrlock(&a->lock);
+#endif
+
+#ifdef USING_SEM
+	sem_wait(&a->sem);
 #endif
 
 	if (amt < 0)
 	{
 #ifdef USING_MUTEX
 		pthread_mutex_unlock(&a->mutex);
-#else
+#endif
+
+#ifdef USING_RWLOCK
 		pthread_rwlock_unlock(&a->lock);
 #endif
+
+#ifdef USING_SEM
+		sem_post(&a->sem);
+#endif
+
 		return 0.0;
 	}
 
@@ -102,8 +155,14 @@ double deposit(Account *a, double amt)
 
 #ifdef USING_MUTEX
 		pthread_mutex_unlock(&a->mutex);
-#else
+#endif
+
+#ifdef USING_RWLOCK
 		pthread_rwlock_unlock(&a->lock);
+#endif
+
+#ifdef USING_SEM
+		sem_post(&a->sem);
 #endif
 
 	return amt;
@@ -111,17 +170,25 @@ double deposit(Account *a, double amt)
 
 double get_balance(Account *a)
 {
-	double balance;
+	double balance = -0.0;
 	assert(a != NULL);
 
 #ifdef USING_MUTEX
 	pthread_mutex_lock(&a->mutex);
 	balance = a->balance;
 	pthread_mutex_unlock(&a->mutex);
-#else
+#endif
+
+#ifdef USING_RWLOCK
 	pthread_rwlock_rdlock(&a->lock);
 	balance = a->balance;
 	pthread_rwlock_unlock(&a->lock);
+#endif
+
+#ifdef USING_SEM
+	sem_wait(&a->sem);
+	balance = a->balance;
+	sem_post(&a->sem);
 #endif
 
 	return balance;

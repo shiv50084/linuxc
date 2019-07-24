@@ -1,8 +1,13 @@
 #ifndef __ACCOUNT_H__
 #define __ACCOUNT_H__
 #include <pthread.h>
+#include <semaphore.h>
 
-#undef USING_MUTEX
+/* enable only one of mode below */
+#define USING_MUTEX
+#undef USING_RWLOCK
+#undef USING_SEM
+
 typedef struct
 {
 	int code; /* 账户号 */
@@ -17,12 +22,18 @@ typedef struct
 	 * 去锁定多个用户导致并发性能降低
 	 */
 	pthread_mutex_t mutex;
-#else
+#endif
+
+#ifdef USING_RWLOCK
 	/*
 	 * 线程使用互斥锁缺乏读并发性
 	 * 当读操作较多,写操作较少时,可以使用读写锁提高线程读并发性
 	 */
 	pthread_rwlock_t lock;
+#endif
+
+#ifdef USING_SEM
+	sem_t sem;
 #endif
 }Account;
 

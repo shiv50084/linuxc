@@ -2,15 +2,21 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <semaphore.h>
 
+#undef USING_SEM
 /* 一个线程负责计算结果, 一个线程负责获取结果 */
 typedef struct
 {
 	int res; /* hold the result */
 	int ready_get_result; /* user define condition */
 
+#ifdef USING_SEM
+	sem_t sem;
+#else
 	pthread_mutex_t mutex;
 	pthread_cond_t cond;
+#endif
 } Result;
 
 /* do calculate */
@@ -23,6 +29,9 @@ void *calc_routine(void *argc)
 		sum += i;
 	r->res = sum; /* prepare the result */
 
+#ifdef USING_SEM
+	sem_post(&r->sem);
+#else
 	/* is get routine ready for the result? */
 	pthread_mutex_lock(&r->mutex);
 	while (!r->ready_get_result) /* 判断接收线程是否已经就绪 */
@@ -38,7 +47,7 @@ void *calc_routine(void *argc)
 	 * 唤醒接收线程
 	 */
 	pthread_cond_broadcast(&r->cond);
-
+#endif
 	return (void *)0;
 }
 
@@ -47,6 +56,9 @@ void *get_routine(void *argc)
 {
 	Result *r = (Result *)argc;
 
+#ifdef USING_SEM
+	sem_wait(&r->sem);
+#else
 	/*
 	 * 对两个线程共享的判断条件进行保护(加锁)
 	 * mutex 同时保护了ready_get_result和等待队列
@@ -70,7 +82,7 @@ void *get_routine(void *argc)
 	pthread_cond_wait(&r->cond, &r->mutex); /* 这里为什么放在unlock前 */
 
 	pthread_mutex_unlock(&r->mutex); /* 和pthread_cond_wait里的唤醒后的lock配对 */
-
+#endif
 	printf("Get result %d\n", r->res);
 
 	return (void *)0;
@@ -83,8 +95,14 @@ int main(int argc, char *argv[])
 
 	Result r;
 	r.ready_get_result = 0;
+#ifdef USING_SEM
+	printf("Semaphore implementation\n");
+	sem_init(&r.sem, 0, 0);
+#else
+	printf("MutexCondition implementation\n");
 	pthread_cond_init(&r.cond, NULL);
 	pthread_mutex_init(&r.mutex, NULL);
+#endif
 
 	if ((err = pthread_create(&tid_get, NULL,
 					get_routine, (void *)&r)) != 0)
@@ -101,8 +119,12 @@ int main(int argc, char *argv[])
 	pthread_join(tid_calc, NULL);
 	pthread_join(tid_get, NULL);
 
+#ifdef USING_SEM
+	sem_destroy(&r.sem);
+#else
 	pthread_cond_destroy(&r.cond);
 	pthread_mutex_destroy(&r.mutex);
+#endif
 
 	return 0;
 }
