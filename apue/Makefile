@@ -4,9 +4,15 @@ LINK.c=$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 CFLAGS=-DLINUX -ansi -I$(PWD)/include -Wall -D_GNU_SOURCE $(EXTRA)
 
 PROGS =	shell1 shell2 unlink pipe1 pipe2 pipe4 popen1 \
-	popen2 myuclc add2 nobuffer_io std_io
+	popen2 myuclc add2 nobuffer_io std_io cmd_pipe brokenpr
 
 all: $(PROGS)
+
+cmdpipe: cmd_pipe.o
+		$(CC) $(CFLAGS) -o $@ $^
+
+brokenpr: broken_pipe_r.o
+		$(CC) $(CFLAGS) -o $@ $^
 
 shell1:	shell1.o errors.o
 		$(CC) $(CFLAGS) -o $@ $^
