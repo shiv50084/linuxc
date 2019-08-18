@@ -4,9 +4,9 @@
 #include <stdint.h>
 
 /*
- * buff_st_1 和buff_st_2是一样的
+ * http://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
  *
- * 零长度数组(变长数组)不占用内存空间
+ * 零长度数组和可变长数组
  *
  * data地址紧接在结构内部内
  * buff_st_1 or buff_st_2
@@ -28,17 +28,26 @@
  *   |              ^
  *   |              |
  *   |______________|
+ *
+ *
+ *   http://edusagar.com/articles/view/19/zero-length-array-in-C
+ *   在网络编程中,假设需要将结构体通过网络传递
+ *   由于可变长结构体数据部分地址和结构体首地址
+ *   相差一个偏移地址,所以可以很容易的进行按字节拷贝的方式传递数据
+ *
+ *   而指针的形式由于结构体地址和数据端地址不再同一片内存上
+ *   无法按照字节拷贝的方式拷贝数据
  */
 typedef struct
 {
 	int data_len;
-	char data[0];
+	char data[0]; /* zero-length array */
 } buff_st_1;
 
 typedef struct
 {
 	int data_len;
-	char data[];
+	char data[]; /* flexible length array */
 } buff_st_2;
 
 typedef struct
