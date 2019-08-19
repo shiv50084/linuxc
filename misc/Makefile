@@ -12,9 +12,12 @@ PROGS =	byteio cmd_action containerof cpmem daemon envi \
 	dnotify_test percent_star_d toggle_value mmap_test1 mmap_test2 \
 	mmap_test3w mmap_test3r fsk_demo incomptest selfident \
 	prot_fun glob_example print_color ghbn ghent sep_test1 sep_test2 \
-	zero_array
+	zero_array posrw
 
 all:	$(PROGS)
+
+posrw : pos_rw.o
+		$(CC) $(CFLAGS) -o $@ $^
 
 zero_array : dynamic_or_zero_array.o
 		$(CC) $(CFLAGS) -o $@ $^
