@@ -337,6 +337,10 @@ void input_sync(unsigned int type, unsigned int keycode, int shift)
  *
  * 2. 此时就会向开发板上报键盘按键事件，如果此时在开发板上打开一个终端
  * 即可实现使用接在主机上的物理键盘操控开发板，提升开发效率，不用两个键盘
+ *
+ * 参考文章:
+ * https://www.runoob.com/w3cnote/c-get-keycode.html
+ * https://blog.csdn.net/zhongkunjia/article/details/75142699#
  */
 int main(int argc, char *argv[])
 {
