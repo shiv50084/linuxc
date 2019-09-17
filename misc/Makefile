@@ -5,7 +5,7 @@ CFLAGS= -Wall
 
 PROGS =	byteio cmd_action containerof cpmem daemon envi \
 	findnumber findsubstr cpuspd getpwd initdarr \
-	inotify inotifyep jmp localva strdup parr pbrb \
+	inotify inotifyep jmp jmp_ex localva strdup parr pbrb \
 	recd recdr recdw recu reverstr revert180 scan_cal \
 	bigend socketp stack stdouterr structnop swapno \
 	threadsync ttyname tdas idx2str pc spa epl inotify_example \
@@ -140,6 +140,9 @@ localva:	local_variable.o
 		$(CC) $(CFLAGS) -o $@ $^
 
 jmp:	jmp.o
+		$(CC) $(CFLAGS) -o $@ $^
+
+jmp_ex:	jmp_example.o
 		$(CC) $(CFLAGS) -o $@ $^
 
 epl:	epoll.o
