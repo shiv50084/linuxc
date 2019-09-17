@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
 
 	/* buff_st_1 */
 	buff_st_1 *pbuff1;
-	pbuff1 = (buff_st_1 *)malloc(sizeof(buff_st_1) + sizeof(PersonInfo));
+	pbuff1 = malloc(sizeof(buff_st_1) + sizeof(PersonInfo));
 	if (NULL == pbuff1)
 		perror("malloc error");
 
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
 
 	/* buff_st_2 */
 	buff_st_2 *pbuff2;
-	pbuff2 = (buff_st_2 *)malloc(sizeof(buff_st_1) + sizeof(PersonInfo));
+	pbuff2 = malloc(sizeof(buff_st_1) + sizeof(PersonInfo));
 	if (NULL == pbuff2)
 		perror("malloc error");
 
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 
 	/* buff_st_3 */
 	buff_st_3 *pbuff3;
-	pbuff3 = (buff_st_3 *)malloc(sizeof(buff_st_3));
+	pbuff3 = malloc(sizeof(buff_st_3));
 	if (NULL == pbuff3)
 		perror("malloc error");
 
