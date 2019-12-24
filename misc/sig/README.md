@@ -367,3 +367,71 @@ sigqueue结构:
 errno值随时可能被改变。另外，longjmp()以及siglongjmp()没有被列为可重入函数，
 
 因为不能保证紧接着两个函数的其它调用是安全的。
+
+## Seven things to do with signals
+
+- Ignore them
+
+- Clean up and terminate
+
+	void cleanup(int sigtype)
+	{
+		unlink("/tmp/myworkfile");
+		kill(my_child_pid, SIGTERM);
+		wait(NULL);
+		exit(1);
+	}
+
+	int main(int argc, char *argv[])
+	{
+		signal(SIGTERM, cleanup);
+		open("/tmp/myworkfile", O_RDWR | O_CREAT, 0644);
+
+		my_child_pid = fork();
+
+		/* Get on with some work... */
+
+		return 0;
+	}
+
+- [Reconfigure on the fly](reconfigure.c)
+- Report status dynamically
+
+	void print_state_info(int signum)
+	{
+		printf("%d blocks copies\n", count);
+	}
+
+	int main(int argc, char *argv[])
+	{
+		signal(SIGUSR1, print_state_info);
+
+		for (i = 0; i < A_BIG_NUMBER; i++)
+			read_block();
+			write_block();
+
+		return 0;
+	}
+
+- Turn debugging on and off
+
+	int debug_on = 0;
+	void toggle_debug_flag(int signum)
+	{
+		debug_on ^= 1;
+	}
+
+	int main(int argc, char *argv[])
+	{
+		signal(SIGUSR1, toggle_debug_flag);
+
+		/* Then sometime later in the code ... */
+
+		if (debug_on)
+			printf("something useful for debugging");
+
+		return 0;
+	}
+
+- [Implement a timeout](timeout_impl.c)
+- [Schedule periodic actions](schedule_periodic.c)
