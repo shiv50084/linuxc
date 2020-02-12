@@ -458,6 +458,7 @@
 ## [例子15 多进程调试](./multi_process.md)
 ## [例子16 同时调试多个应用程序](./multi_program)
 ## [例子17 符号表的使用方法](./symbol_file.md)
+## [gentoo 上使用gdb调试](gentoo_gdb.md)
 ## 调试过程中的其它问题
 
 调试过程中遇到找不到libc库文件
