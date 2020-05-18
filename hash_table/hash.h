@@ -35,4 +35,5 @@ typedef struct _HASH_TABLE
 extern NODE* make_node(PI pi);
 extern void insert_data_into_hash(HASH_TABLE* pHashTbl, NODE *n);
 extern LIST_HEAD* find_slot_list_head(HASH_TABLE* pHashTbl, int number);
+void show_hash_table(HASH_TABLE* pHashTbl);
 #endif

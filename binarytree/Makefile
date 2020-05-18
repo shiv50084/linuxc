@@ -1,7 +1,7 @@
 CC=gcc
 COMPILE.c=$(CC) $(CFLAGS) $(CPPFLAGS) -c
 LINK.c=$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
-CFLAGS= -Wall
+CFLAGS= -Wall -g -fno-omit-frame-pointer
 
 PROGS = traversal_demo bst_demo \
 		precreate_demo forktree_demo \

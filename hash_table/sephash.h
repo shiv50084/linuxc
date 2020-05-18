@@ -1,9 +1,7 @@
+#include "common.h"
+
 #ifndef __SEPHASH__
 #define __SEPHASH__
-/* Interface for separate chaining hash table */
-typedef int ElementType;
-
-#define MinTableSize (10)
 
 struct ListNode
 {
