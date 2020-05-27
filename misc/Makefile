@@ -12,9 +12,12 @@ PROGS =	byteio cmd_action containerof cpmem daemon envi \
 	dnotify_test percent_star_d toggle_value mmap_test1 mmap_test2 \
 	mmap_test3w mmap_test3r fsk_demo incomptest selfident \
 	prot_fun glob_example print_color ghbn ghent sep_test1 sep_test2 \
-	zero_array posrw proc_ctl
+	zero_array posrw proc_ctl cping
 
 all:	$(PROGS)
+
+cping : cping.o
+		$(CC) $(CFLAGS) -o $@ $^ -lpthread
 
 proc_ctl : proc_ctl.o
 		$(CC) $(CFLAGS) -o $@ $^
