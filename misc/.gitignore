@@ -63,3 +63,4 @@ posrw
 jmp_ex
 proc_ctl
 cping
+nsstest
