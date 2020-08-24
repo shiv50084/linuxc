@@ -5,3 +5,4 @@ project.info
 *.gcov
 *.gcda
 *.gcno
+build
