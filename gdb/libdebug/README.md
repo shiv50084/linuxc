@@ -40,3 +40,14 @@
 	value = 911
 	static test end
 	[Inferior 1 (process 15165) exited normally]
+
+## Build with Meson
+
+Compile
+
+	meson build
+	ninja -C build
+
+Run
+
+	LD_LIBRARY_PATH=build/lib/static:build/lib/dynamic build/app/testapp
